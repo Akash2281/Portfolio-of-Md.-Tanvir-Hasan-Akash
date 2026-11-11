@@ -126,29 +126,18 @@ export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxData, setLightboxData] = useState(null);
 
-  // SECTION-BOUND SCROLL REF & HOOKS
-  const expertiseRef = useRef(null);
-  const projectsRef = useRef(null);
+  // GLOBAL SCROLL PARALLAX FOR BACKGROUND 3D ASSETS
+  const { scrollYProgress } = useScroll();
 
-  // Track Scroll Progress specifically for Expertise Section
-  const { scrollYProgress: expertiseScroll } = useScroll({
-    target: expertiseRef,
-    offset: ["start end", "end start"]
-  });
+  // Smooth floating Y-axis translations for background objects
+  const y3DPython = useTransform(scrollYProgress, [0, 1], [0, 600]);
+  const y3DReact = useTransform(scrollYProgress, [0, 1], [0, -700]);
+  const y3DDesign = useTransform(scrollYProgress, [0, 1], [-200, 500]);
+  const y3DCamera = useTransform(scrollYProgress, [0, 1], [300, -400]);
 
-  // Track Scroll Progress specifically for Projects Section
-  const { scrollYProgress: projectsScroll } = useScroll({
-    target: projectsRef,
-    offset: ["start end", "end start"]
-  });
-
-  // Section-bounded Parallax Movements (Limited strictly within section bounds)
-  const yPythonIcon = useTransform(expertiseScroll, [0, 1], [-60, 80]);
-  const yDesignIcon = useTransform(expertiseScroll, [0, 1], [80, -60]);
-  const rotateIcon = useTransform(expertiseScroll, [0, 1], [-15, 20]);
-
-  const yReactIcon = useTransform(projectsScroll, [0, 1], [-80, 100]);
-  const yVideoIcon = useTransform(projectsScroll, [0, 1], [60, -80]);
+  // Rotations for 3D effect
+  const rotate3D1 = useTransform(scrollYProgress, [0, 1], [0, 180]);
+  const rotate3D2 = useTransform(scrollYProgress, [0, 1], [0, -240]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -179,6 +168,70 @@ export default function Portfolio() {
         }}
         transition={{ type: "spring", stiffness: 350, damping: 28, mass: 0.5 }}
       />
+
+      {/* ----------------- BLAYDEN-STYLE FIXED BACKGROUND 3D OBJECTS ----------------- */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        
+        {/* Subtle Grid Pattern Overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.03]"
+          style={{ 
+            backgroundImage: `radial-gradient(circle at 1px 1px, #f59e0b 1px, transparent 0)`, 
+            backgroundSize: '40px 40px' 
+          }} 
+        />
+
+        {/* 3D Asset 1: Python & Logic Glass Cube (Top-Right Background) */}
+        <motion.div 
+          style={{ y: y3DPython, rotate: rotate3D1 }}
+          className="absolute top-[15%] right-[5%] w-36 h-36 sm:w-48 sm:h-48 rounded-3xl bg-gradient-to-br from-amber-500/15 via-white/[0.02] to-transparent border border-amber-500/25 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center p-4 text-center hidden lg:flex"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-2 border border-amber-500/30">
+            <FileCode className="w-6 h-6 text-amber-400" />
+          </div>
+          <span className="text-xs font-bold text-white tracking-widest uppercase">Python 3D</span>
+          <span className="text-[9px] text-amber-300/60 font-mono mt-1">PyQt6 Engine</span>
+        </motion.div>
+
+        {/* 3D Asset 2: React Quantum Sphere (Middle-Left Background) */}
+        <motion.div 
+          style={{ y: y3DReact, rotate: rotate3D2 }}
+          className="absolute top-[45%] left-[3%] w-40 h-40 sm:w-52 sm:h-52 rounded-full bg-gradient-to-tr from-blue-500/15 via-purple-500/10 to-transparent border border-blue-500/25 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center p-4 text-center hidden lg:flex"
+        >
+          <div className="w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center mb-2 border border-blue-500/30">
+            <Cpu className="w-7 h-7 text-blue-400 animate-pulse" />
+          </div>
+          <span className="text-xs font-bold text-white tracking-widest uppercase">React UI</span>
+          <span className="text-[9px] text-blue-300/60 font-mono mt-1">Frontend Core</span>
+        </motion.div>
+
+        {/* 3D Asset 3: Design & UI Crystal Prism (Lower-Right Background) */}
+        <motion.div 
+          style={{ y: y3DDesign, rotate: rotate3D1 }}
+          className="absolute top-[65%] right-[4%] w-36 h-36 sm:w-48 sm:h-48 rounded-3xl bg-gradient-to-bl from-purple-500/15 via-pink-500/5 to-transparent border border-purple-500/25 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center p-4 text-center hidden lg:flex"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-2 border border-purple-500/30">
+            <Palette className="w-6 h-6 text-purple-400" />
+          </div>
+          <span className="text-xs font-bold text-white tracking-widest uppercase">3D Visuals</span>
+          <span className="text-[9px] text-purple-300/60 font-mono mt-1">Photoshop & AI</span>
+        </motion.div>
+
+        {/* 3D Asset 4: Astrophotography & Video Lens (Bottom-Left Background) */}
+        <motion.div 
+          style={{ y: y3DCamera, rotate: rotate3D2 }}
+          className="absolute top-[85%] left-[6%] w-32 h-32 sm:w-44 sm:h-44 rounded-full bg-gradient-to-br from-emerald-500/15 via-black/40 to-transparent border border-emerald-500/25 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center p-4 text-center hidden lg:flex"
+        >
+          <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mb-1 border border-emerald-500/30">
+            <Camera className="w-6 h-6 text-emerald-400" />
+          </div>
+          <span className="text-[11px] font-bold text-white tracking-widest uppercase">Optics</span>
+        </motion.div>
+
+        {/* Ambient Glows */}
+        <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[180px] pointer-events-none" />
+        <div className="absolute top-[60%] right-[10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[200px] pointer-events-none" />
+      </div>
 
       <style dangerouslySetInnerHTML={{__html: `
         @media (pointer: coarse) { .hidden-on-touch { display: none !important; } }
@@ -267,7 +320,7 @@ export default function Portfolio() {
             </ScrollReveal>
           </div>
 
-          {/* Right Showcase: Large Profile Picture Frame */}
+          {/* Right Showcase: Profile Photo */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <ScrollReveal delay={0.2} className="w-full max-w-[360px] sm:max-w-[440px]">
               <motion.div 
@@ -320,35 +373,11 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* EXPERTISE SECTION (CONTAINS BOUNDED PYTHON & DESIGN LOGO ELEMENTS) */}
+      {/* EXPERTISE SECTION */}
       <section 
         id="expertise"
-        ref={expertiseRef}
-        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10 overflow-hidden"
+        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
       >
-        {/* SECTION-BOUNDED FLOATING TECH LOGO BADGES */}
-        <motion.div 
-          style={{ y: yPythonIcon, rotate: rotateIcon }}
-          className="absolute top-12 right-12 z-0 hidden lg:flex items-center gap-3 px-5 py-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 backdrop-blur-xl shadow-xl shadow-amber-500/10"
-        >
-          <FileCode className="w-7 h-7 text-amber-400" />
-          <div>
-            <span className="text-xs font-bold text-white block">Python & PyQt6</span>
-            <span className="text-[10px] text-amber-300/80 font-mono">Backend & GUI Engine</span>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          style={{ y: yDesignIcon, rotate: rotateIcon }}
-          className="absolute bottom-16 left-8 z-0 hidden lg:flex items-center gap-3 px-5 py-3 rounded-2xl bg-purple-500/10 border border-purple-500/30 backdrop-blur-xl shadow-xl shadow-purple-500/10"
-        >
-          <Palette className="w-7 h-7 text-purple-400" />
-          <div>
-            <span className="text-xs font-bold text-white block">Illustrator & Photoshop</span>
-            <span className="text-[10px] text-purple-300/80 font-mono">UI/UX & Visual Art</span>
-          </div>
-        </motion.div>
-
         <ScrollReveal>
           <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white mb-16 tracking-tight relative z-10">
             Arsenal & Expertise
@@ -380,35 +409,11 @@ export default function Portfolio() {
         </motion.div>
       </section>
 
-      {/* PROJECTS SECTION (CONTAINS BOUNDED REACT & PREMIERE PRO LOGO ELEMENTS) */}
+      {/* PROJECTS SECTION */}
       <section 
         id="projects"
-        ref={projectsRef}
-        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10 overflow-hidden"
+        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
       >
-        {/* SECTION-BOUNDED FLOATING REACT & VIDEO LOGO BADGES */}
-        <motion.div 
-          style={{ y: yReactIcon }}
-          className="absolute top-10 left-10 z-0 hidden lg:flex items-center gap-3 px-5 py-3 rounded-2xl bg-blue-500/10 border border-blue-500/30 backdrop-blur-xl shadow-xl shadow-blue-500/10"
-        >
-          <Cpu className="w-7 h-7 text-blue-400" />
-          <div>
-            <span className="text-xs font-bold text-white block">React & Tailwind</span>
-            <span className="text-[10px] text-blue-300/80 font-mono">Frontend Architecture</span>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          style={{ y: yVideoIcon }}
-          className="absolute bottom-20 right-10 z-0 hidden lg:flex items-center gap-3 px-5 py-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 backdrop-blur-xl shadow-xl shadow-emerald-500/10"
-        >
-          <Video className="w-7 h-7 text-emerald-400" />
-          <div>
-            <span className="text-xs font-bold text-white block">Premiere Pro</span>
-            <span className="text-[10px] text-emerald-300/80 font-mono">Cinematic Video Edit</span>
-          </div>
-        </motion.div>
-
         <ScrollReveal>
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 border-b border-white/5 pb-10 relative z-10">
             <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white tracking-tight">
