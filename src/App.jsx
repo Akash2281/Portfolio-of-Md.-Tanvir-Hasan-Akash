@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { 
   Code2, 
   MonitorPlay, 
@@ -122,6 +122,14 @@ export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxData, setLightboxData] = useState(null);
 
+  // --- SCROLL-RESPONSIVE BACKGROUND ANIMATIONS ---
+  const { scrollYProgress } = useScroll();
+  
+  const yOrbTop = useTransform(scrollYProgress, [0, 1], [0, -250]);
+  const yOrbMiddle = useTransform(scrollYProgress, [0, 1], [0, 350]);
+  const rotateRing = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  const footerGlowScale = useTransform(scrollYProgress, [0.7, 1], [0.8, 1.4]);
+
   useEffect(() => {
     const handleMouseMove = (e) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -140,13 +148,59 @@ export default function Portfolio() {
   return (
     <main className="relative min-h-screen bg-[#070709] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100">
       
-      {/* Subtle Ambient Background Lighting (Non-distracting) */}
+      {/* ----------------- SCROLL RESPONSIVE ANIMATED BACKGROUND ----------------- */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-amber-500/[0.04] rounded-full blur-[180px]" />
-        <div className="absolute top-[40%] -right-40 w-[600px] h-[600px] bg-purple-900/[0.03] rounded-full blur-[200px]" />
+        {/* Subtle Radial Dot Grid Overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.03]"
+          style={{ 
+            backgroundImage: `radial-gradient(circle at 1px 1px, #f59e0b 1px, transparent 0)`, 
+            backgroundSize: '48px 48px' 
+          }} 
+        />
+
+        {/* Scroll-Responsive Top Amber Orb */}
+        <motion.div 
+          style={{ y: yOrbTop }}
+          className="absolute -top-32 left-1/4 w-[600px] h-[600px] bg-amber-500/[0.08] rounded-full blur-[160px]"
+        />
+
+        {/* Scroll-Responsive Middle Purple Orb */}
+        <motion.div 
+          style={{ y: yOrbMiddle }}
+          className="absolute top-[35%] -right-32 w-[650px] h-[650px] bg-purple-900/[0.08] rounded-full blur-[190px]"
+        />
+
+        {/* Dynamic Rotating Geometric Ring */}
+        <motion.div 
+          style={{ rotate: rotateRing }}
+          className="absolute top-[20%] right-[6%] w-80 h-80 rounded-full border border-amber-500/10 border-dashed pointer-events-none hidden lg:block"
+        />
+
+        {/* Animated Astro Accent Stars */}
+        <motion.div 
+          animate={{ y: [0, -20, 0], opacity: [0.2, 0.7, 0.2] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[30%] left-[10%] text-amber-400/30 text-sm hidden sm:block"
+        >
+          ✦
+        </motion.div>
+        <motion.div 
+          animate={{ y: [0, 25, 0], opacity: [0.3, 0.8, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[70%] right-[12%] text-amber-300/30 text-base hidden sm:block"
+        >
+          ✧
+        </motion.div>
+
+        {/* Dynamic Bottom Page Glow */}
+        <motion.div 
+          style={{ scale: footerGlowScale }}
+          className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-amber-500/[0.12] rounded-full blur-[200px]"
+        />
       </div>
 
-      {/* Subtle Custom Cursor */}
+      {/* Dynamic Cursor */}
       <motion.div
         className="fixed top-0 left-0 w-3.5 h-3.5 bg-amber-500 rounded-full pointer-events-none z-[100] mix-blend-difference hidden sm:block"
         animate={{ 
@@ -245,10 +299,17 @@ export default function Portfolio() {
             </ScrollReveal>
           </div>
 
-          {/* Right Hero: High-Res Clean Headshot Frame */}
+          {/* Right Hero: High-Tech Glassmorphic Profile Photo Frame */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
             <ScrollReveal delay={0.2} className="w-full max-w-[360px] sm:max-w-[430px]">
-              <div className="relative rounded-3xl p-3 bg-gradient-to-b from-white/10 via-white/[0.03] to-black/80 border border-white/10 backdrop-blur-2xl shadow-2xl group">
+              <motion.div 
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="relative rounded-3xl p-3 sm:p-4 bg-gradient-to-b from-amber-500/25 via-white/[0.04] to-black/90 border border-amber-500/35 backdrop-blur-2xl shadow-2xl shadow-amber-500/10 group"
+              >
+                {/* Glowing Subtle Corner Accent */}
+                <div className="absolute -top-6 -left-6 w-28 h-28 bg-amber-500/15 blur-2xl rounded-full pointer-events-none" />
+
                 <div className="relative w-full h-[450px] sm:h-[520px] rounded-2xl overflow-hidden bg-neutral-900 border border-white/10">
                   <img 
                     src="/profile.jpg" 
@@ -259,10 +320,10 @@ export default function Portfolio() {
                       e.target.src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80";
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
 
                   {/* Status Badge */}
-                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-[10px] uppercase tracking-wider text-amber-400 font-bold">
+                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-amber-500/30 text-[10px] uppercase tracking-wider text-amber-400 font-bold">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     Available For Projects
                   </div>
@@ -274,11 +335,11 @@ export default function Portfolio() {
                         <h4 className="text-white text-sm font-bold tracking-tight">Md. Tanvir Hasan Akash</h4>
                         <p className="text-neutral-400 text-[11px]">B.Sc CSE • Dhaka, Bangladesh</p>
                       </div>
-                      <Compass className="w-5 h-5 text-amber-400" />
+                      <Compass className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '14s' }} />
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </ScrollReveal>
           </div>
 
