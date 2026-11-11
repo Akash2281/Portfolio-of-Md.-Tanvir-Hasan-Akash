@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Code2, 
   MonitorPlay, 
@@ -14,10 +14,7 @@ import {
   Play,
   Image as ImageIcon,
   Sparkles,
-  Compass,
-  FileCode,
-  Layers,
-  Cpu
+  Compass
 } from 'lucide-react';
 
 // --- DATA ---
@@ -93,10 +90,10 @@ const showcaseItems = [
 const ScrollReveal = ({ children, delay = 0, className = "", width = "100%" }) => (
   <div style={{ width }} className={className}>
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-5%" }}
-      transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
     </motion.div>
@@ -108,36 +105,22 @@ const staggerContainer = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
+      staggerChildren: 0.08,
+      delayChildren: 0.1
     }
   }
 };
 
 const staggerItem = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+  hidden: { opacity: 0, y: 25 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
 };
 
-// --- MAIN APP ---
 export default function Portfolio() {
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxData, setLightboxData] = useState(null);
-
-  // GLOBAL SCROLL PARALLAX FOR BACKGROUND 3D ASSETS
-  const { scrollYProgress } = useScroll();
-
-  // Smooth floating Y-axis translations for background objects
-  const y3DPython = useTransform(scrollYProgress, [0, 1], [0, 600]);
-  const y3DReact = useTransform(scrollYProgress, [0, 1], [0, -700]);
-  const y3DDesign = useTransform(scrollYProgress, [0, 1], [-200, 500]);
-  const y3DCamera = useTransform(scrollYProgress, [0, 1], [300, -400]);
-
-  // Rotations for 3D effect
-  const rotate3D1 = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const rotate3D2 = useTransform(scrollYProgress, [0, 1], [0, -240]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -155,98 +138,40 @@ export default function Portfolio() {
     : showcaseItems.filter(item => item.type === activeFilter);
 
   return (
-    <main className="relative min-h-screen bg-[#050507] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100">
+    <main className="relative min-h-screen bg-[#070709] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100">
       
-      {/* Custom Floating Cursor */}
+      {/* Subtle Ambient Background Lighting (Non-distracting) */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-amber-500/[0.04] rounded-full blur-[180px]" />
+        <div className="absolute top-[40%] -right-40 w-[600px] h-[600px] bg-purple-900/[0.03] rounded-full blur-[200px]" />
+      </div>
+
+      {/* Subtle Custom Cursor */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-amber-500 rounded-full pointer-events-none z-[100] mix-blend-difference hidden sm:block"
+        className="fixed top-0 left-0 w-3.5 h-3.5 bg-amber-500 rounded-full pointer-events-none z-[100] mix-blend-difference hidden sm:block"
         animate={{ 
-          x: cursorPos.x - 8, 
-          y: cursorPos.y - 8,
-          scale: isHovering ? 4 : 1,
-          opacity: isHovering ? 0.5 : 1
+          x: cursorPos.x - 7, 
+          y: cursorPos.y - 7,
+          scale: isHovering ? 3.5 : 1,
+          opacity: isHovering ? 0.6 : 0.9
         }}
         transition={{ type: "spring", stiffness: 350, damping: 28, mass: 0.5 }}
       />
-
-      {/* ----------------- BLAYDEN-STYLE FIXED BACKGROUND 3D OBJECTS ----------------- */}
-      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        
-        {/* Subtle Grid Pattern Overlay */}
-        <div 
-          className="absolute inset-0 opacity-[0.03]"
-          style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, #f59e0b 1px, transparent 0)`, 
-            backgroundSize: '40px 40px' 
-          }} 
-        />
-
-        {/* 3D Asset 1: Python & Logic Glass Cube (Top-Right Background) */}
-        <motion.div 
-          style={{ y: y3DPython, rotate: rotate3D1 }}
-          className="absolute top-[15%] right-[5%] w-36 h-36 sm:w-48 sm:h-48 rounded-3xl bg-gradient-to-br from-amber-500/15 via-white/[0.02] to-transparent border border-amber-500/25 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center p-4 text-center hidden lg:flex"
-        >
-          <div className="w-12 h-12 rounded-2xl bg-amber-500/20 flex items-center justify-center mb-2 border border-amber-500/30">
-            <FileCode className="w-6 h-6 text-amber-400" />
-          </div>
-          <span className="text-xs font-bold text-white tracking-widest uppercase">Python 3D</span>
-          <span className="text-[9px] text-amber-300/60 font-mono mt-1">PyQt6 Engine</span>
-        </motion.div>
-
-        {/* 3D Asset 2: React Quantum Sphere (Middle-Left Background) */}
-        <motion.div 
-          style={{ y: y3DReact, rotate: rotate3D2 }}
-          className="absolute top-[45%] left-[3%] w-40 h-40 sm:w-52 sm:h-52 rounded-full bg-gradient-to-tr from-blue-500/15 via-purple-500/10 to-transparent border border-blue-500/25 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center p-4 text-center hidden lg:flex"
-        >
-          <div className="w-14 h-14 rounded-full bg-blue-500/20 flex items-center justify-center mb-2 border border-blue-500/30">
-            <Cpu className="w-7 h-7 text-blue-400 animate-pulse" />
-          </div>
-          <span className="text-xs font-bold text-white tracking-widest uppercase">React UI</span>
-          <span className="text-[9px] text-blue-300/60 font-mono mt-1">Frontend Core</span>
-        </motion.div>
-
-        {/* 3D Asset 3: Design & UI Crystal Prism (Lower-Right Background) */}
-        <motion.div 
-          style={{ y: y3DDesign, rotate: rotate3D1 }}
-          className="absolute top-[65%] right-[4%] w-36 h-36 sm:w-48 sm:h-48 rounded-3xl bg-gradient-to-bl from-purple-500/15 via-pink-500/5 to-transparent border border-purple-500/25 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center p-4 text-center hidden lg:flex"
-        >
-          <div className="w-12 h-12 rounded-2xl bg-purple-500/20 flex items-center justify-center mb-2 border border-purple-500/30">
-            <Palette className="w-6 h-6 text-purple-400" />
-          </div>
-          <span className="text-xs font-bold text-white tracking-widest uppercase">3D Visuals</span>
-          <span className="text-[9px] text-purple-300/60 font-mono mt-1">Photoshop & AI</span>
-        </motion.div>
-
-        {/* 3D Asset 4: Astrophotography & Video Lens (Bottom-Left Background) */}
-        <motion.div 
-          style={{ y: y3DCamera, rotate: rotate3D2 }}
-          className="absolute top-[85%] left-[6%] w-32 h-32 sm:w-44 sm:h-44 rounded-full bg-gradient-to-br from-emerald-500/15 via-black/40 to-transparent border border-emerald-500/25 backdrop-blur-xl shadow-2xl flex flex-col items-center justify-center p-4 text-center hidden lg:flex"
-        >
-          <div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center mb-1 border border-emerald-500/30">
-            <Camera className="w-6 h-6 text-emerald-400" />
-          </div>
-          <span className="text-[11px] font-bold text-white tracking-widest uppercase">Optics</span>
-        </motion.div>
-
-        {/* Ambient Glows */}
-        <div className="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[180px] pointer-events-none" />
-        <div className="absolute top-[60%] right-[10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[200px] pointer-events-none" />
-      </div>
 
       <style dangerouslySetInnerHTML={{__html: `
         @media (pointer: coarse) { .hidden-on-touch { display: none !important; } }
         html { scroll-behavior: smooth; }
         body { cursor: none; }
         @media (pointer: coarse) { body { cursor: auto; } }
-        .bento-grid { display: grid; grid-auto-flow: dense; gap: 1rem; }
+        .bento-grid { display: grid; grid-auto-flow: dense; gap: 1.25rem; }
         .size-small { grid-column: span 1; grid-row: span 1; }
         .size-wide { grid-column: span 2; grid-row: span 1; }
         .size-tall { grid-column: span 1; grid-row: span 2; }
         .size-large { grid-column: span 2; grid-row: span 2; }
       `}} />
 
-      {/* HEADER */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-5 md:px-12 backdrop-blur-xl border-b border-white/5 bg-black/50">
+      {/* NAVIGATION HEADER */}
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-5 md:px-12 backdrop-blur-xl border-b border-white/5 bg-[#070709]/80">
         <a 
           href="#" 
           onMouseEnter={handleHoverStart} 
@@ -262,7 +187,7 @@ export default function Portfolio() {
               href={`#${link}`} 
               onMouseEnter={handleHoverStart} 
               onMouseLeave={handleHoverEnd}
-              className="text-xs font-medium tracking-widest text-gray-400 hover:text-white uppercase transition-colors duration-300"
+              className="text-xs font-medium tracking-widest text-gray-400 hover:text-amber-400 uppercase transition-colors duration-300"
             >
               {link}
             </a>
@@ -277,7 +202,7 @@ export default function Portfolio() {
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
-          {/* Left Text Content */}
+          {/* Left Hero Text */}
           <div className="lg:col-span-7 space-y-6">
             <ScrollReveal>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold uppercase tracking-widest mb-2">
@@ -286,15 +211,15 @@ export default function Portfolio() {
             </ScrollReveal>
 
             <ScrollReveal delay={0.1}>
-              <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tighter leading-[0.9] uppercase">
+              <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tighter leading-[0.95] uppercase">
                 Tanvir Hasan <br />
-                <span className="text-gray-500">Akash<span className="text-amber-500">.</span></span>
+                <span className="text-neutral-500">Akash<span className="text-amber-500">.</span></span>
               </h1>
             </ScrollReveal>
 
             <ScrollReveal delay={0.2}>
-              <p className="text-base sm:text-xl text-gray-400 font-light leading-relaxed max-w-2xl pt-2">
-                Merging logic with imagination. I engineer scalable software, design pixel-perfect interfaces, and produce cinematic visual media—delivering complete, end-to-end digital experiences.
+              <p className="text-base sm:text-xl text-neutral-400 font-light leading-relaxed max-w-2xl pt-2">
+                Merging logic with imagination. I engineer scalable software, design pixel-perfect interfaces, and produce cinematic visual media—delivering complete digital experiences.
               </p>
             </ScrollReveal>
 
@@ -304,7 +229,7 @@ export default function Portfolio() {
                   href="#projects"
                   onMouseEnter={handleHoverStart} 
                   onMouseLeave={handleHoverEnd}
-                  className="px-8 py-4 bg-amber-500 text-black font-bold rounded-full hover:bg-amber-400 transition-all transform hover:scale-105 text-xs sm:text-sm tracking-widest uppercase shadow-lg shadow-amber-500/20"
+                  className="px-8 py-4 bg-amber-500 text-black font-bold rounded-full hover:bg-amber-400 transition-all transform hover:scale-105 text-xs sm:text-sm tracking-widest uppercase shadow-lg shadow-amber-500/15"
                 >
                   Explore Work
                 </a>
@@ -320,53 +245,40 @@ export default function Portfolio() {
             </ScrollReveal>
           </div>
 
-          {/* Right Showcase: Profile Photo */}
+          {/* Right Hero: High-Res Clean Headshot Frame */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <ScrollReveal delay={0.2} className="w-full max-w-[360px] sm:max-w-[440px]">
-              <motion.div 
-                whileHover={{ y: -8, scale: 1.02 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-                className="relative rounded-3xl p-3 sm:p-4 bg-gradient-to-b from-amber-500/30 via-white/[0.04] to-black/90 border border-amber-500/40 backdrop-blur-2xl shadow-2xl shadow-amber-500/10 group"
-              >
+            <ScrollReveal delay={0.2} className="w-full max-w-[360px] sm:max-w-[430px]">
+              <div className="relative rounded-3xl p-3 bg-gradient-to-b from-white/10 via-white/[0.03] to-black/80 border border-white/10 backdrop-blur-2xl shadow-2xl group">
                 <div className="relative w-full h-[450px] sm:h-[520px] rounded-2xl overflow-hidden bg-neutral-900 border border-white/10">
                   <img 
                     src="/profile.jpg" 
                     alt="Md. Tanvir Hasan Akash" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-[0.98] contrast-[1.05]"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-[0.98] contrast-[1.02]"
                     onError={(e) => {
                       e.target.onerror = null; 
                       e.target.src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80";
                     }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
 
-                  {/* Top Status */}
-                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-amber-500/30 text-[10px] uppercase tracking-wider text-amber-400 font-bold">
+                  {/* Status Badge */}
+                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-[10px] uppercase tracking-wider text-amber-400 font-bold">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    Available For Hire
+                    Available For Projects
                   </div>
 
-                  {/* Bottom Info Overlay */}
+                  {/* Profile Info Overlay */}
                   <div className="absolute bottom-6 left-5 right-5 space-y-3">
-                    <div className="flex flex-wrap gap-2">
-                      <span className="px-3 py-1 bg-amber-500/20 backdrop-blur-md border border-amber-500/30 rounded-full text-[10px] font-mono text-amber-200">
-                        Frontend & Python
-                      </span>
-                      <span className="px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-mono text-neutral-300">
-                        Astrophotography
-                      </span>
-                    </div>
-
-                    <div className="bg-black/80 backdrop-blur-md p-3.5 rounded-xl border border-white/10 flex justify-between items-center">
+                    <div className="bg-black/85 backdrop-blur-md p-4 rounded-xl border border-white/10 flex justify-between items-center">
                       <div>
                         <h4 className="text-white text-sm font-bold tracking-tight">Md. Tanvir Hasan Akash</h4>
                         <p className="text-neutral-400 text-[11px]">B.Sc CSE • Dhaka, Bangladesh</p>
                       </div>
-                      <Compass className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '14s' }} />
+                      <Compass className="w-5 h-5 text-amber-400" />
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </ScrollReveal>
           </div>
 
@@ -379,9 +291,12 @@ export default function Portfolio() {
         className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
       >
         <ScrollReveal>
-          <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white mb-16 tracking-tight relative z-10">
-            Arsenal & Expertise
-          </h3>
+          <div className="mb-16">
+            <span className="text-xs uppercase tracking-[0.3em] text-amber-500 font-bold block mb-2">Capabilities</span>
+            <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white tracking-tight">
+              Arsenal & Expertise
+            </h3>
+          </div>
         </ScrollReveal>
 
         <motion.div 
@@ -389,7 +304,7 @@ export default function Portfolio() {
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-10%" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 relative z-10"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
         >
           {expertise.map((item, idx) => (
             <motion.div 
@@ -397,13 +312,13 @@ export default function Portfolio() {
               variants={staggerItem}
               onMouseEnter={handleHoverStart} 
               onMouseLeave={handleHoverEnd}
-              className="group relative p-8 md:p-10 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-amber-500/30 transition-all duration-500 hover:-translate-y-2 hover:bg-white/[0.04]"
+              className="group relative p-8 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-amber-500/40 transition-all duration-300 hover:bg-white/[0.04]"
             >
-              <div className="mb-8 p-4 inline-block rounded-xl bg-black/50 group-hover:bg-amber-500/10 transition-colors duration-500">
+              <div className="mb-6 p-3.5 inline-block rounded-xl bg-black/60 border border-white/5 group-hover:border-amber-500/20 transition-colors">
                 {item.icon}
               </div>
-              <h4 className="text-xl font-medium text-white mb-4 tracking-wide">{item.title}</h4>
-              <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+              <h4 className="text-lg font-bold text-white mb-3 tracking-wide">{item.title}</h4>
+              <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed font-light">{item.desc}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -412,67 +327,66 @@ export default function Portfolio() {
       {/* PROJECTS SECTION */}
       <section 
         id="projects"
-        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
+        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10 border-t border-white/5"
       >
         <ScrollReveal>
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 border-b border-white/5 pb-10 relative z-10">
-            <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white tracking-tight">
-              Flagship Software
-            </h3>
-            <p className="text-gray-400 max-w-sm text-sm uppercase tracking-widest">
-              Engineering complex systems into beautiful, intuitive interfaces.
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 border-b border-white/5 pb-10">
+            <div>
+              <span className="text-xs uppercase tracking-[0.3em] text-amber-500 font-bold block mb-2">Selected Works</span>
+              <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white tracking-tight">
+                Flagship Software
+              </h3>
+            </div>
+            <p className="text-neutral-400 max-w-sm text-xs sm:text-sm uppercase tracking-widest leading-relaxed">
+              Engineering complex systems into clean, intuitive digital products.
             </p>
           </div>
         </ScrollReveal>
 
-        <div className="flex flex-col gap-12 sm:gap-24 relative z-10">
+        <div className="flex flex-col gap-16">
           {projects.map((project, idx) => (
             <ScrollReveal key={idx}>
               <div 
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl bg-white/[0.02] border border-white/5 hover:border-amber-500/30 transition-all duration-500 ${project.featured ? 'xl:flex-row' : 'xl:flex-row-reverse'} min-h-[550px]`}
+                className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl bg-[#0d0d10] border border-white/10 hover:border-amber-500/30 transition-all duration-500 ${project.featured ? 'xl:flex-row' : 'xl:flex-row-reverse'} min-h-[520px]`}
               >
-                <div className="p-8 sm:p-14 xl:p-20 flex flex-col justify-center w-full xl:w-1/2">
-                  <div className="flex flex-wrap gap-2 mb-8">
+                <div className="p-8 sm:p-14 xl:p-16 flex flex-col justify-center w-full xl:w-1/2">
+                  <div className="flex flex-wrap gap-2 mb-6">
                     {project.tags.map(tag => (
-                      <span key={tag} className="px-4 py-1.5 text-[10px] sm:text-xs tracking-widest uppercase text-amber-200/70 border border-amber-200/20 bg-amber-500/5 rounded-full">
+                      <span key={tag} className="px-3.5 py-1 text-[11px] font-mono tracking-wider uppercase text-amber-300/80 border border-amber-500/20 bg-amber-500/5 rounded-full">
                         {tag}
                       </span>
                     ))}
                   </div>
                   
-                  <h5 className="text-amber-500 font-medium tracking-widest text-sm uppercase mb-3">
+                  <h5 className="text-amber-500 font-medium tracking-widest text-xs uppercase mb-2">
                     {project.subtitle}
                   </h5>
-                  <h4 className="font-serif text-3xl sm:text-5xl text-white mb-6 tracking-tight group-hover:text-amber-50 transition-colors">
+                  <h4 className="font-serif text-3xl sm:text-5xl text-white mb-6 tracking-tight group-hover:text-amber-100 transition-colors">
                     {project.title}
                   </h4>
-                  <p className="text-gray-400 text-base sm:text-lg font-light leading-relaxed mb-10 max-w-xl">
+                  <p className="text-neutral-400 text-sm sm:text-base font-light leading-relaxed mb-8 max-w-xl">
                     {project.desc}
                   </p>
                   
                   <button 
                     onMouseEnter={handleHoverStart} 
                     onMouseLeave={handleHoverEnd}
-                    className="flex items-center gap-4 text-white font-medium group/btn w-fit text-xs sm:text-sm tracking-widest uppercase"
+                    className="flex items-center gap-3 text-white font-semibold group/btn w-fit text-xs tracking-widest uppercase"
                   >
                     View Case Study
-                    <span className="p-3 rounded-full bg-white/5 group-hover/btn:bg-amber-500 group-hover/btn:text-black transition-all duration-300 group-hover/btn:scale-110">
-                      <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="p-2.5 rounded-full bg-white/5 group-hover/btn:bg-amber-500 group-hover/btn:text-black transition-all duration-300">
+                      <ArrowUpRight className="w-4 h-4" />
                     </span>
                   </button>
                 </div>
 
-                <div className={`relative w-full xl:w-1/2 min-h-[350px] xl:min-h-full overflow-hidden ${project.featured ? 'xl:border-l' : 'xl:border-r'} border-white/5`}>
+                <div className={`relative w-full xl:w-1/2 min-h-[320px] xl:min-h-full overflow-hidden ${project.featured ? 'xl:border-l' : 'xl:border-r'} border-white/5`}>
                   <img 
                     src={project.img} 
                     alt={project.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-90 contrast-105" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
-                  <div className="absolute bottom-8 left-8 right-8 flex justify-between items-center text-xs font-mono text-amber-400 border-t border-white/10 pt-4">
-                    <span>{project.title} Visual Concept</span>
-                    <span>Live Showcase</span>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 </div>
               </div>
             </ScrollReveal>
@@ -483,26 +397,29 @@ export default function Portfolio() {
       {/* CREATIVE SHOWCASE */}
       <section 
         id="showcase"
-        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
+        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10 border-t border-white/5"
       >
         <ScrollReveal>
-          <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white mb-10 tracking-tight">
-            Creative Visuals
-          </h3>
+          <div className="mb-10">
+            <span className="text-xs uppercase tracking-[0.3em] text-amber-500 font-bold block mb-2">Portfolio Gallery</span>
+            <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white tracking-tight">
+              Creative Visuals
+            </h3>
+          </div>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <div className="flex flex-wrap gap-2 sm:gap-4 mb-12">
+          <div className="flex flex-wrap gap-2.5 mb-12">
             {['All', 'Photography', 'Video', 'Graphic Design', 'AI Art'].map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
                 onMouseEnter={handleHoverStart} 
                 onMouseLeave={handleHoverEnd}
-                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-medium tracking-widest uppercase transition-all duration-300 ${
+                className={`px-5 py-2.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
                   activeFilter === cat 
-                  ? 'bg-amber-500 text-black shadow-[0_0_20px_rgba(245,158,11,0.2)]' 
-                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                  ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' 
+                  : 'bg-white/5 border border-white/10 text-neutral-400 hover:text-white'
                 }`}
               >
                 {cat}
@@ -517,31 +434,30 @@ export default function Portfolio() {
               <motion.div
                 key={item.id}
                 layout
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.4 }}
                 onClick={() => setLightboxData(item)}
                 onMouseEnter={handleHoverStart} 
                 onMouseLeave={handleHoverEnd}
-                className={`size-${item.size} group relative bg-neutral-900 border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-amber-500/40 transition-colors`}
-                style={{ minHeight: '240px' }}
+                className={`size-${item.size} group relative bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden cursor-pointer hover:border-amber-500/50 transition-all`}
+                style={{ minHeight: '250px' }}
               >
                 <img 
                   src={item.img} 
                   alt={item.title} 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 filter brightness-75 group-hover:brightness-95"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
                 />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                 
                 <div className="absolute inset-0 flex flex-col justify-between p-6 z-10">
-                  <span className="text-[10px] font-bold tracking-widest uppercase text-amber-400 bg-black/60 backdrop-blur-md w-fit px-3 py-1 rounded-full border border-white/10">
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-amber-400 bg-black/70 backdrop-blur-md w-fit px-3 py-1 rounded-full border border-white/10">
                     {item.type}
                   </span>
                   
                   <div className="flex justify-between items-end">
-                    <h4 className="text-white font-medium text-base sm:text-lg leading-tight max-w-[80%]">
+                    <h4 className="text-white font-bold text-base leading-tight max-w-[80%]">
                       {item.title}
                     </h4>
                     <div className="w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-amber-500 group-hover:text-black transition-all">
@@ -558,55 +474,59 @@ export default function Portfolio() {
       {/* FOOTER / CONTACT */}
       <footer 
         id="contact"
-        className="px-6 md:px-12 lg:px-24 py-28 mt-20 border-t border-white/5 relative z-10 overflow-hidden"
+        className="px-6 md:px-12 lg:px-24 py-28 mt-20 border-t border-white/5 relative z-10 text-center"
       >
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] rounded-t-full border-t border-amber-500/20 pointer-events-none animate-pulse" />
-
-        <ScrollReveal className="max-w-5xl mx-auto text-center flex flex-col items-center">
-          <h2 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-white mb-6 tracking-tighter leading-none">
+        <ScrollReveal className="max-w-4xl mx-auto flex flex-col items-center">
+          <span className="text-xs uppercase tracking-[0.3em] text-amber-500 font-bold block mb-4">Get In Touch</span>
+          <h2 className="font-serif text-5xl sm:text-7xl md:text-8xl text-white mb-6 tracking-tighter leading-none">
             Let's build <br />
-            <span className="text-gray-600 italic">the future.</span>
+            <span className="text-neutral-500 italic">the future.</span>
           </h2>
           
           <button 
             onMouseEnter={handleHoverStart} 
             onMouseLeave={handleHoverEnd}
-            className="inline-flex items-center gap-4 px-8 sm:px-10 py-4 sm:py-5 mt-8 rounded-full bg-white text-black font-bold tracking-widest uppercase text-xs sm:text-sm hover:bg-amber-500 hover:scale-105 transition-all duration-300 shadow-xl shadow-amber-500/20"
+            className="inline-flex items-center gap-3 px-9 py-4 mt-8 rounded-full bg-amber-500 text-black font-bold tracking-widest uppercase text-xs hover:bg-amber-400 hover:scale-105 transition-all duration-300 shadow-xl shadow-amber-500/20"
           >
-            <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Mail className="w-4 h-4" />
             Contact Me
           </button>
 
-          <div className="mt-24 w-full flex flex-col md:flex-row items-center justify-between text-xs sm:text-sm text-gray-600 border-t border-white/10 pt-8 uppercase tracking-widest gap-4">
-            <p>© {new Date().getFullYear()} Tanvir Hasan Akash. All rights reserved.</p>
+          <div className="mt-24 w-full flex flex-col sm:flex-row items-center justify-between text-xs text-neutral-500 border-t border-white/10 pt-8 uppercase tracking-widest gap-4">
+            <p>© {new Date().getFullYear()} Md. Tanvir Hasan Akash. All rights reserved.</p>
             <div className="flex gap-8">
-              <a href="#" className="hover:text-amber-500 transition-colors">LinkedIn</a>
-              <a href="#" className="hover:text-amber-500 transition-colors">GitHub</a>
-              <a href="#" className="hover:text-amber-500 transition-colors">Instagram</a>
+              <a href="#" className="hover:text-amber-400 transition-colors">LinkedIn</a>
+              <a href="#" className="hover:text-amber-400 transition-colors">GitHub</a>
+              <a href="#" className="hover:text-amber-400 transition-colors">Instagram</a>
             </div>
           </div>
         </ScrollReveal>
       </footer>
 
-      {/* FULLSCREEN LIGHTBOX MODAL */}
+      {/* LIGHTBOX MODAL */}
       <AnimatePresence>
         {lightboxData && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            onClick={() => setLightboxData(null)}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4 sm:p-12"
           >
-            <button 
-              onClick={() => setLightboxData(null)}
-              onMouseEnter={handleHoverStart} 
-              onMouseLeave={handleHoverEnd}
-              className="absolute top-6 right-6 sm:top-12 sm:right-12 text-white/50 hover:text-white hover:rotate-90 transition-all duration-300"
+            <motion.div 
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.95 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-5xl aspect-video bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col items-center justify-center"
             >
-              <X className="w-8 h-8 sm:w-10 sm:h-10" />
-            </button>
-            
-            <div className="relative w-full max-w-5xl aspect-video bg-[#111] border border-white/10 rounded-2xl sm:rounded-[2rem] overflow-hidden flex flex-col items-center justify-center">
+              <button 
+                onClick={() => setLightboxData(null)}
+                className="absolute top-6 right-6 text-white/50 hover:text-white transition-colors z-20 p-2 rounded-full bg-black/50"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
               <img 
                 src={lightboxData.img} 
                 alt={lightboxData.title} 
@@ -614,14 +534,14 @@ export default function Portfolio() {
               />
               
               <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 bg-gradient-to-t from-black via-black/80 to-transparent">
-                <span className="text-amber-400 text-xs font-bold tracking-widest uppercase mb-2 block">
+                <span className="text-amber-400 text-xs font-bold tracking-widest uppercase mb-1 block">
                   {lightboxData.type}
                 </span>
                 <h3 className="font-serif text-2xl sm:text-4xl text-white">
                   {lightboxData.title}
                 </h3>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
