@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { 
   Code2, 
@@ -14,9 +14,10 @@ import {
   Play,
   Image as ImageIcon,
   Sparkles,
-  MapPin,
   Compass,
-  Layers
+  Zap,
+  Globe,
+  Radio
 } from 'lucide-react';
 
 // --- DATA ---
@@ -24,37 +25,37 @@ const expertise = [
   {
     title: "Frontend Development",
     desc: "Crafting highly interactive, responsive web applications using HTML, CSS, JavaScript, React, and Tailwind.",
-    icon: <Code2 strokeWidth={1.5} className="w-8 h-8 text-amber-100" />
+    icon: <Code2 strokeWidth={1.5} className="w-8 h-8 text-amber-400" />
   },
   {
     title: "Software Development",
     desc: "Building robust backend logic and desktop applications using Python and PyQt6.",
-    icon: <MonitorPlay strokeWidth={1.5} className="w-8 h-8 text-amber-100" />
+    icon: <MonitorPlay strokeWidth={1.5} className="w-8 h-8 text-amber-400" />
   },
   {
     title: "Graphic & UI/UX Design",
     desc: "Designing pixel-perfect interfaces and striking visuals using Figma, Illustrator, Photoshop, and Lightroom.",
-    icon: <Palette strokeWidth={1.5} className="w-8 h-8 text-amber-100" />
+    icon: <Palette strokeWidth={1.5} className="w-8 h-8 text-amber-400" />
   },
   {
     title: "Video Production",
     desc: "Editing high-end commercials, documentaries, and social content in Adobe Premiere Pro.",
-    icon: <Video strokeWidth={1.5} className="w-8 h-8 text-amber-100" />
+    icon: <Video strokeWidth={1.5} className="w-8 h-8 text-amber-400" />
   },
   {
     title: "AI Automation & Generation",
     desc: "Mastering Prompt Engineering and AI tools to generate stunning artwork and automate complex workflows.",
-    icon: <Bot strokeWidth={1.5} className="w-8 h-8 text-amber-100" />
+    icon: <Bot strokeWidth={1.5} className="w-8 h-8 text-amber-400" />
   },
   {
     title: "Search Engine Optimization",
     desc: "Ranking digital products organically through technical SEO and content strategies.",
-    icon: <Search strokeWidth={1.5} className="w-8 h-8 text-amber-100" />
+    icon: <Search strokeWidth={1.5} className="w-8 h-8 text-amber-400" />
   },
   {
     title: "Professional Photography",
     desc: "Capturing moments, astrophotography, and high-quality portraits with precision lighting.",
-    icon: <Camera strokeWidth={1.5} className="w-8 h-8 text-amber-100" />
+    icon: <Camera strokeWidth={1.5} className="w-8 h-8 text-amber-400" />
   }
 ];
 
@@ -64,6 +65,7 @@ const projects = [
     subtitle: "AI Mental Health Companion",
     desc: "A groundbreaking platform that analyzes stress levels and emotional states through text or voice. Mento interacts intelligently with users, dynamically adapting its responses to elevate their emotional well-being after every session.",
     tags: ["Python", "React", "Tailwind", "AI / ML"],
+    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80",
     featured: true
   },
   {
@@ -71,19 +73,20 @@ const projects = [
     subtitle: "Advanced Desktop Media Hub",
     desc: "A custom-engineered desktop media player (TanHafPlayer) featuring real-time 4K upscaling, fluid audio wave visualizers, and a stunning glassmorphic interface.",
     tags: ["Python", "PyQt6", "Desktop App"],
+    img: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&auto=format&fit=crop&q=80",
     featured: false
   }
 ];
 
 const showcaseItems = [
-  { id: 1, type: "Photography", title: "Milky Way Astrophotography", size: "tall" },
-  { id: 2, type: "Video", title: "Automotive Commercial Edit", size: "wide" },
-  { id: 3, type: "Graphic Design", title: "Brand Identity - Vector", size: "small" },
-  { id: 4, type: "AI Art", title: "Cyberpunk Cityscape Generation", size: "large" },
-  { id: 5, type: "Photography", title: "Urban Portrait Series", size: "wide" },
-  { id: 6, type: "Graphic Design", title: "UI/UX Mobile App Concept", size: "tall" },
-  { id: 7, type: "Video", title: "Travel Documentary Color Grade", size: "small" },
-  { id: 8, type: "AI Art", title: "Surrealist Concept Render", size: "small" }
+  { id: 1, type: "Photography", title: "Milky Way Astrophotography", size: "tall", img: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=800&auto=format&fit=crop&q=80" },
+  { id: 2, type: "Video", title: "Automotive Commercial Edit", size: "wide", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop&q=80" },
+  { id: 3, type: "Graphic Design", title: "Brand Identity - Vector", size: "small", img: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=800&auto=format&fit=crop&q=80" },
+  { id: 4, type: "AI Art", title: "Cyberpunk Cityscape Generation", size: "large", img: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80" },
+  { id: 5, type: "Photography", title: "Urban Portrait Series", size: "wide", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80" },
+  { id: 6, type: "Graphic Design", title: "UI/UX Mobile App Concept", size: "tall", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80" },
+  { id: 7, type: "Video", title: "Travel Documentary Color Grade", size: "small", img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&auto=format&fit=crop&q=80" },
+  { id: 8, type: "AI Art", title: "Surrealist Concept Render", size: "small", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=800&auto=format&fit=crop&q=80" }
 ];
 
 // --- REUSABLE ANIMATION COMPONENTS ---
@@ -118,19 +121,21 @@ const staggerItem = {
 
 // --- MAIN APP ---
 export default function Portfolio() {
-  const [bgColor, setBgColor] = useState('#050505');
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxData, setLightboxData] = useState(null);
 
-  // Parallax scroll hooks
+  // Advanced Parallax Scroll Controls
   const { scrollYProgress } = useScroll();
-  const yOrb1 = useTransform(scrollYProgress, [0, 1], [0, -350]);
-  const yOrb2 = useTransform(scrollYProgress, [0, 1], [0, 450]);
-  const yOrb3 = useTransform(scrollYProgress, [0, 1], [0, -250]);
-  const rotateRing = useTransform(scrollYProgress, [0, 1], [0, 360]);
-  const scaleFooterOrb = useTransform(scrollYProgress, [0.7, 1], [0.6, 1.4]);
+  
+  // Floating Background Movements
+  const yOrb1 = useTransform(scrollYProgress, [0, 1], [0, -400]);
+  const yOrb2 = useTransform(scrollYProgress, [0, 1], [0, 500]);
+  const yOrb3 = useTransform(scrollYProgress, [0, 1], [0, -300]);
+  const rotateRing1 = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  const rotateRing2 = useTransform(scrollYProgress, [0, 1], [360, 0]);
+  const footerScale = useTransform(scrollYProgress, [0.75, 1], [0.5, 1.5]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -148,12 +153,9 @@ export default function Portfolio() {
     : showcaseItems.filter(item => item.type === activeFilter);
 
   return (
-    <motion.main 
-      animate={{ backgroundColor: bgColor }} 
-      transition={{ duration: 1.2, ease: "easeInOut" }}
-      className="relative min-h-screen text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100"
-    >
-      {/* Custom Floating Cursor */}
+    <main className="relative min-h-screen bg-[#050507] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100">
+      
+      {/* Dynamic Floating Cursor */}
       <motion.div
         className="fixed top-0 left-0 w-4 h-4 bg-amber-500 rounded-full pointer-events-none z-[100] mix-blend-difference hidden sm:block"
         animate={{ 
@@ -165,51 +167,74 @@ export default function Portfolio() {
         transition={{ type: "spring", stiffness: 350, damping: 28, mass: 0.5 }}
       />
       
-      {/* PARALLAX FLOATING BACKGROUND ELEMENTS */}
+      {/* ----------------- PARALLAX VISUAL BACKGROUND ELEMENTS ----------------- */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Top Floating Glow Orb */}
-        <motion.div 
-          style={{ y: yOrb1 }}
-          className="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[160px]"
+        
+        {/* Subtle Grid Pattern Overlay */}
+        <div 
+          className="absolute inset-0 opacity-[0.03]"
+          style={{ 
+            backgroundImage: `radial-gradient(circle at 1px 1px, #f59e0b 1px, transparent 0)`, 
+            backgroundSize: '40px 40px' 
+          }} 
         />
 
-        {/* Middle Floating Purple/Gold Ambient Spheres */}
+        {/* Ambient Glowing Orbs */}
+        <motion.div 
+          style={{ y: yOrb1 }}
+          className="absolute -top-40 left-[10%] w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[170px]"
+        />
+
         <motion.div 
           style={{ y: yOrb2 }}
-          className="absolute top-1/3 -right-32 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[180px]"
+          className="absolute top-[35%] -right-40 w-[700px] h-[700px] bg-purple-900/15 rounded-full blur-[190px]"
         />
 
         <motion.div 
           style={{ y: yOrb3 }}
-          className="absolute top-2/3 -left-32 w-[550px] h-[550px] bg-amber-600/10 rounded-full blur-[170px]"
+          className="absolute top-[65%] -left-40 w-[650px] h-[650px] bg-amber-600/10 rounded-full blur-[180px]"
         />
 
-        {/* Dynamic Rotating Wireframe Vector Ring */}
+        {/* Floating Interactive Geometric Wireframes (Scroll Responsive) */}
         <motion.div 
-          style={{ rotate: rotateRing }}
-          className="absolute top-[20%] right-[8%] w-80 h-80 rounded-full border border-amber-500/10 border-dashed opacity-40 hidden lg:block"
+          style={{ rotate: rotateRing1 }}
+          className="absolute top-[15%] right-[5%] w-96 h-96 rounded-full border border-amber-500/15 border-dashed pointer-events-none hidden lg:block"
         />
 
-        {/* Parallax Floating Stars & Particles */}
         <motion.div 
-          animate={{ y: [0, -20, 0], opacity: [0.3, 0.7, 0.3] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[45%] left-[12%] text-amber-400/20 text-xs hidden sm:block"
+          style={{ rotate: rotateRing2 }}
+          className="absolute top-[50%] left-[3%] w-[450px] h-[450px] rounded-full border border-white/5 border-dashed pointer-events-none hidden lg:block"
+        />
+
+        {/* Floating Astro Star Constellations */}
+        <motion.div 
+          animate={{ y: [0, -25, 0], opacity: [0.2, 0.8, 0.2] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[25%] left-[15%] text-amber-400/40 text-sm hidden sm:block"
         >
           ✦
         </motion.div>
+
         <motion.div 
-          animate={{ y: [0, 25, 0], opacity: [0.2, 0.6, 0.2] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[75%] right-[15%] text-amber-300/30 text-sm hidden sm:block"
+          animate={{ y: [0, 30, 0], opacity: [0.3, 0.9, 0.3] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[55%] right-[12%] text-amber-300/40 text-base hidden sm:block"
         >
           ✧
         </motion.div>
 
-        {/* Footer Ambient Parallax Glow Orb (Page Bottom) */}
         <motion.div 
-          style={{ scale: scaleFooterOrb }}
-          className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-500/15 rounded-full blur-[200px]"
+          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.6, 0.2] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[80%] left-[20%] text-amber-500/30 text-xs hidden sm:block"
+        >
+          ✦
+        </motion.div>
+
+        {/* Footer Deep Space Parallax Glow (Bottom Page) */}
+        <motion.div 
+          style={{ scale: footerScale }}
+          className="absolute -bottom-60 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-t from-amber-500/20 via-amber-500/5 to-transparent rounded-full blur-[220px]"
         />
       </div>
 
@@ -232,7 +257,7 @@ export default function Portfolio() {
       `}} />
 
       {/* HEADER */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-5 md:px-12 backdrop-blur-xl border-b border-white/5 bg-black/40">
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-5 md:px-12 backdrop-blur-xl border-b border-white/5 bg-black/50">
         <a 
           href="#" 
           onMouseEnter={handleHoverStart} 
@@ -256,16 +281,14 @@ export default function Portfolio() {
         </nav>
       </header>
 
-      {/* HERO SECTION WITH LARGE UNIQUE PORTRAIT CARD */}
-      <motion.section 
+      {/* HERO SECTION WITH LARGE GLASS PHOTO FRAME */}
+      <section 
         id="hero"
-        onViewportEnter={() => setBgColor('#050505')}
-        viewport={{ amount: 0.5 }}
         className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-32 pb-20 max-w-[1920px] mx-auto w-full relative z-10"
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
-          {/* Left Hero Typography Content */}
+          {/* Left Text Content */}
           <div className="lg:col-span-7 space-y-6">
             <ScrollReveal>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold uppercase tracking-widest mb-2">
@@ -292,7 +315,7 @@ export default function Portfolio() {
                   href="#projects"
                   onMouseEnter={handleHoverStart} 
                   onMouseLeave={handleHoverEnd}
-                  className="px-8 py-4 bg-amber-500 text-black font-bold rounded-full hover:bg-amber-400 transition-all transform hover:scale-105 text-xs sm:text-sm tracking-widest uppercase"
+                  className="px-8 py-4 bg-amber-500 text-black font-bold rounded-full hover:bg-amber-400 transition-all transform hover:scale-105 text-xs sm:text-sm tracking-widest uppercase shadow-lg shadow-amber-500/20"
                 >
                   Explore Work
                 </a>
@@ -308,20 +331,19 @@ export default function Portfolio() {
             </ScrollReveal>
           </div>
 
-          {/* Right Showcase: Large Unique High-Tech Glassmorphic Profile Card */}
+          {/* Right Showcase: Unique High-Tech Glassmorphic Profile Card */}
           <div className="lg:col-span-5 flex justify-center lg:justify-end">
-            <ScrollReveal delay={0.2} className="w-full max-w-[340px] sm:max-w-[420px]">
+            <ScrollReveal delay={0.2} className="w-full max-w-[360px] sm:max-w-[440px]">
               <motion.div 
                 whileHover={{ y: -8, scale: 1.02 }}
                 transition={{ duration: 0.5, ease: "easeOut" }}
-                className="relative rounded-3xl p-3 sm:p-4 bg-gradient-to-b from-amber-500/20 via-white/[0.04] to-black/90 border border-amber-500/30 backdrop-blur-2xl shadow-2xl shadow-amber-500/10 group"
+                className="relative rounded-3xl p-3 sm:p-4 bg-gradient-to-b from-amber-500/30 via-white/[0.04] to-black/90 border border-amber-500/40 backdrop-blur-2xl shadow-2xl shadow-amber-500/10 group"
               >
-                {/* Glowing Corner Accents */}
-                <div className="absolute top-0 left-0 w-20 h-20 bg-amber-500/10 blur-xl rounded-full pointer-events-none" />
-                <div className="absolute bottom-0 right-0 w-24 h-24 bg-purple-600/10 blur-xl rounded-full pointer-events-none" />
+                {/* Glowing Background Accent */}
+                <div className="absolute -top-10 -left-10 w-32 h-32 bg-amber-500/20 blur-2xl rounded-full pointer-events-none" />
 
                 {/* Profile Photo Wrapper */}
-                <div className="relative w-full h-[420px] sm:h-[500px] rounded-2xl overflow-hidden bg-neutral-900 border border-white/10">
+                <div className="relative w-full h-[450px] sm:h-[520px] rounded-2xl overflow-hidden bg-neutral-900 border border-white/10">
                   <img 
                     src="/profile.jpg" 
                     alt="Tanvir Hasan Akash" 
@@ -331,16 +353,15 @@ export default function Portfolio() {
                       e.target.src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80";
                     }}
                   />
-                  {/* Subtle Dark Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
                   {/* Top Live Status Badge */}
-                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] uppercase tracking-wider text-amber-400 font-bold">
+                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-amber-500/30 text-[10px] uppercase tracking-wider text-amber-400 font-bold">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     Available For Hire
                   </div>
 
-                  {/* Floating Skill Badges */}
+                  {/* Floating Tech Badges */}
                   <div className="absolute bottom-6 left-5 right-5 space-y-3">
                     <div className="flex flex-wrap gap-2">
                       <span className="px-3 py-1 bg-amber-500/20 backdrop-blur-md border border-amber-500/30 rounded-full text-[10px] font-mono text-amber-200">
@@ -356,7 +377,7 @@ export default function Portfolio() {
                         <h4 className="text-white text-sm font-bold tracking-tight">Md. Tanvir Hasan Akash</h4>
                         <p className="text-neutral-400 text-[11px]">B.Sc CSE • Dhaka, Bangladesh</p>
                       </div>
-                      <Compass className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '12s' }} />
+                      <Compass className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '14s' }} />
                     </div>
                   </div>
                 </div>
@@ -365,13 +386,11 @@ export default function Portfolio() {
           </div>
 
         </div>
-      </motion.section>
+      </section>
 
       {/* EXPERTISE SECTION */}
-      <motion.section 
+      <section 
         id="expertise"
-        onViewportEnter={() => setBgColor('#0f0f11')}
-        viewport={{ amount: 0.3 }}
         className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
       >
         <ScrollReveal>
@@ -403,13 +422,11 @@ export default function Portfolio() {
             </motion.div>
           ))}
         </motion.div>
-      </motion.section>
+      </section>
 
-      {/* PROJECTS SECTION */}
-      <motion.section 
+      {/* PROJECTS SECTION WITH VISUAL MOCKUP CARDS */}
+      <section 
         id="projects"
-        onViewportEnter={() => setBgColor('#0d0a0f')}
-        viewport={{ amount: 0.2 }}
         className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
       >
         <ScrollReveal>
@@ -427,12 +444,12 @@ export default function Portfolio() {
           {projects.map((project, idx) => (
             <ScrollReveal key={idx}>
               <div 
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors duration-500 ${project.featured ? 'xl:flex-row' : 'xl:flex-row-reverse'} min-h-[550px]`}
+                className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl bg-white/[0.02] border border-white/5 hover:border-amber-500/30 transition-all duration-500 ${project.featured ? 'xl:flex-row' : 'xl:flex-row-reverse'} min-h-[550px]`}
               >
                 <div className="p-8 sm:p-14 xl:p-20 flex flex-col justify-center w-full xl:w-1/2">
                   <div className="flex flex-wrap gap-2 mb-8">
                     {project.tags.map(tag => (
-                      <span key={tag} className="px-4 py-1.5 text-[10px] sm:text-xs tracking-widest uppercase text-amber-200/60 border border-amber-200/10 rounded-full">
+                      <span key={tag} className="px-4 py-1.5 text-[10px] sm:text-xs tracking-widest uppercase text-amber-200/70 border border-amber-200/20 bg-amber-500/5 rounded-full">
                         {tag}
                       </span>
                     ))}
@@ -460,28 +477,28 @@ export default function Portfolio() {
                   </button>
                 </div>
 
-                <div className={`relative w-full xl:w-1/2 bg-black min-h-[350px] xl:min-h-full overflow-hidden ${project.featured ? 'xl:border-l' : 'xl:border-r'} border-white/5`}>
-                  <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '48px 48px' }}></div>
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                    className="absolute inset-0 bg-gradient-to-tr from-transparent to-amber-500/10"
+                {/* Rich Visual Mockup Image */}
+                <div className={`relative w-full xl:w-1/2 min-h-[350px] xl:min-h-full overflow-hidden ${project.featured ? 'xl:border-l' : 'xl:border-r'} border-white/5`}>
+                  <img 
+                    src={project.img} 
+                    alt={project.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-90 contrast-105" 
                   />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/10 font-serif text-2xl sm:text-4xl tracking-widest uppercase text-center w-full">
-                    {project.title} <br/> Visuals
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                  <div className="absolute bottom-8 left-8 right-8 flex justify-between items-center text-xs font-mono text-amber-400 border-t border-white/10 pt-4">
+                    <span>{project.title} Visual Concept</span>
+                    <span>Live Showcase</span>
                   </div>
                 </div>
               </div>
             </ScrollReveal>
           ))}
         </div>
-      </motion.section>
+      </section>
 
-      {/* CREATIVE SHOWCASE */}
-      <motion.section 
+      {/* CREATIVE SHOWCASE (BENTO GRID WITH PHOTOS) */}
+      <section 
         id="showcase"
-        onViewportEnter={() => setBgColor('#080808')}
-        viewport={{ amount: 0.1 }}
         className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
       >
         <ScrollReveal>
@@ -523,13 +540,20 @@ export default function Portfolio() {
                 onClick={() => setLightboxData(item)}
                 onMouseEnter={handleHoverStart} 
                 onMouseLeave={handleHoverEnd}
-                className={`size-${item.size} group relative bg-white/[0.03] border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-amber-500/40 transition-colors`}
+                className={`size-${item.size} group relative bg-neutral-900 border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-amber-500/40 transition-colors`}
                 style={{ minHeight: '240px' }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/90 group-hover:scale-105 transition-transform duration-700"></div>
+                {/* Background Showcase Image */}
+                <img 
+                  src={item.img} 
+                  alt={item.title} 
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 filter brightness-75 group-hover:brightness-95"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
                 
-                <div className="absolute inset-0 flex flex-col justify-between p-6">
-                  <span className="text-[10px] font-bold tracking-widest uppercase text-amber-500/80 bg-black/50 w-fit px-3 py-1 rounded-full backdrop-blur-md">
+                <div className="absolute inset-0 flex flex-col justify-between p-6 z-10">
+                  <span className="text-[10px] font-bold tracking-widest uppercase text-amber-400 bg-black/60 backdrop-blur-md w-fit px-3 py-1 rounded-full border border-white/10">
                     {item.type}
                   </span>
                   
@@ -546,17 +570,15 @@ export default function Portfolio() {
             ))}
           </AnimatePresence>
         </motion.div>
-      </motion.section>
+      </section>
 
-      {/* FOOTER / CONTACT WITH PARALLAX ORB AT BOTTOM */}
-      <motion.footer 
+      {/* FOOTER / CONTACT WITH MOTION PARALLAX ORBIT */}
+      <footer 
         id="contact"
-        onViewportEnter={() => setBgColor('#050505')}
-        viewport={{ amount: 0.5 }}
         className="px-6 md:px-12 lg:px-24 py-28 mt-20 border-t border-white/5 relative z-10 overflow-hidden"
       >
-        {/* Decorative Bottom Wireframe Ring */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-t-full border-t border-amber-500/10 pointer-events-none" />
+        {/* Pulsing Motion Wireframe Ring */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] rounded-t-full border-t border-amber-500/20 pointer-events-none animate-pulse" />
 
         <ScrollReveal className="max-w-5xl mx-auto text-center flex flex-col items-center">
           <h2 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-white mb-6 tracking-tighter leading-none">
@@ -567,7 +589,7 @@ export default function Portfolio() {
           <button 
             onMouseEnter={handleHoverStart} 
             onMouseLeave={handleHoverEnd}
-            className="inline-flex items-center gap-4 px-8 sm:px-10 py-4 sm:py-5 mt-8 rounded-full bg-white text-black font-bold tracking-widest uppercase text-xs sm:text-sm hover:bg-amber-500 hover:scale-105 transition-all duration-300 shadow-xl shadow-amber-500/10"
+            className="inline-flex items-center gap-4 px-8 sm:px-10 py-4 sm:py-5 mt-8 rounded-full bg-white text-black font-bold tracking-widest uppercase text-xs sm:text-sm hover:bg-amber-500 hover:scale-105 transition-all duration-300 shadow-xl shadow-amber-500/20"
           >
             <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
             Contact Me
@@ -582,7 +604,7 @@ export default function Portfolio() {
             </div>
           </div>
         </ScrollReveal>
-      </motion.footer>
+      </footer>
 
       {/* FULLSCREEN LIGHTBOX MODAL */}
       <AnimatePresence>
@@ -602,20 +624,18 @@ export default function Portfolio() {
               <X className="w-8 h-8 sm:w-10 sm:h-10" />
             </button>
             
-            <div className="relative w-full max-w-6xl aspect-video bg-[#111] border border-white/10 rounded-2xl sm:rounded-[3rem] overflow-hidden flex flex-col items-center justify-center">
-              {lightboxData.type === 'Video' ? (
-                <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center pl-1">
-                  <Play className="w-8 h-8 text-white" />
-                </div>
-              ) : (
-                <ImageIcon className="w-20 h-20 text-white/10" />
-              )}
+            <div className="relative w-full max-w-5xl aspect-video bg-[#111] border border-white/10 rounded-2xl sm:rounded-[2rem] overflow-hidden flex flex-col items-center justify-center">
+              <img 
+                src={lightboxData.img} 
+                alt={lightboxData.title} 
+                className="w-full h-full object-cover"
+              />
               
-              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-12 bg-gradient-to-t from-black/90 to-transparent">
-                <span className="text-amber-500 text-xs font-bold tracking-widest uppercase mb-2 block">
+              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-10 bg-gradient-to-t from-black via-black/80 to-transparent">
+                <span className="text-amber-400 text-xs font-bold tracking-widest uppercase mb-2 block">
                   {lightboxData.type}
                 </span>
-                <h3 className="font-serif text-2xl sm:text-5xl text-white">
+                <h3 className="font-serif text-2xl sm:text-4xl text-white">
                   {lightboxData.title}
                 </h3>
               </div>
@@ -624,6 +644,6 @@ export default function Portfolio() {
         )}
       </AnimatePresence>
 
-    </motion.main>
+    </main>
   );
 }
