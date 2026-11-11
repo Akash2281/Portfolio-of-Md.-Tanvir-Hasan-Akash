@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { 
   Code2, 
   MonitorPlay, 
@@ -12,7 +12,11 @@ import {
   Mail,
   X,
   Play,
-  Image as ImageIcon
+  Image as ImageIcon,
+  Sparkles,
+  MapPin,
+  Compass,
+  Layers
 } from 'lucide-react';
 
 // --- DATA ---
@@ -120,6 +124,14 @@ export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxData, setLightboxData] = useState(null);
 
+  // Parallax scroll hooks
+  const { scrollYProgress } = useScroll();
+  const yOrb1 = useTransform(scrollYProgress, [0, 1], [0, -350]);
+  const yOrb2 = useTransform(scrollYProgress, [0, 1], [0, 450]);
+  const yOrb3 = useTransform(scrollYProgress, [0, 1], [0, -250]);
+  const rotateRing = useTransform(scrollYProgress, [0, 1], [0, 360]);
+  const scaleFooterOrb = useTransform(scrollYProgress, [0.7, 1], [0.6, 1.4]);
+
   useEffect(() => {
     const handleMouseMove = (e) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -141,7 +153,7 @@ export default function Portfolio() {
       transition={{ duration: 1.2, ease: "easeInOut" }}
       className="relative min-h-screen text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100"
     >
-      {/* Custom Cursor */}
+      {/* Custom Floating Cursor */}
       <motion.div
         className="fixed top-0 left-0 w-4 h-4 bg-amber-500 rounded-full pointer-events-none z-[100] mix-blend-difference hidden sm:block"
         animate={{ 
@@ -153,6 +165,54 @@ export default function Portfolio() {
         transition={{ type: "spring", stiffness: 350, damping: 28, mass: 0.5 }}
       />
       
+      {/* PARALLAX FLOATING BACKGROUND ELEMENTS */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        {/* Top Floating Glow Orb */}
+        <motion.div 
+          style={{ y: yOrb1 }}
+          className="absolute -top-32 left-1/4 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[160px]"
+        />
+
+        {/* Middle Floating Purple/Gold Ambient Spheres */}
+        <motion.div 
+          style={{ y: yOrb2 }}
+          className="absolute top-1/3 -right-32 w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[180px]"
+        />
+
+        <motion.div 
+          style={{ y: yOrb3 }}
+          className="absolute top-2/3 -left-32 w-[550px] h-[550px] bg-amber-600/10 rounded-full blur-[170px]"
+        />
+
+        {/* Dynamic Rotating Wireframe Vector Ring */}
+        <motion.div 
+          style={{ rotate: rotateRing }}
+          className="absolute top-[20%] right-[8%] w-80 h-80 rounded-full border border-amber-500/10 border-dashed opacity-40 hidden lg:block"
+        />
+
+        {/* Parallax Floating Stars & Particles */}
+        <motion.div 
+          animate={{ y: [0, -20, 0], opacity: [0.3, 0.7, 0.3] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[45%] left-[12%] text-amber-400/20 text-xs hidden sm:block"
+        >
+          ✦
+        </motion.div>
+        <motion.div 
+          animate={{ y: [0, 25, 0], opacity: [0.2, 0.6, 0.2] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[75%] right-[15%] text-amber-300/30 text-sm hidden sm:block"
+        >
+          ✧
+        </motion.div>
+
+        {/* Footer Ambient Parallax Glow Orb (Page Bottom) */}
+        <motion.div 
+          style={{ scale: scaleFooterOrb }}
+          className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-amber-500/15 rounded-full blur-[200px]"
+        />
+      </div>
+
       <style dangerouslySetInnerHTML={{__html: `
         @media (pointer: coarse) { .hidden-on-touch { display: none !important; } }
         html { scroll-behavior: smooth; }
@@ -196,53 +256,115 @@ export default function Portfolio() {
         </nav>
       </header>
 
-      {/* HERO SECTION */}
+      {/* HERO SECTION WITH LARGE UNIQUE PORTRAIT CARD */}
       <motion.section 
         id="hero"
         onViewportEnter={() => setBgColor('#050505')}
         viewport={{ amount: 0.5 }}
-        className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-28 pb-16 max-w-[1920px] mx-auto w-full relative z-10"
+        className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-32 pb-20 max-w-[1920px] mx-auto w-full relative z-10"
       >
-        <ScrollReveal>
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
-            {/* Profile Image Avatar */}
-            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-tr from-amber-500 via-amber-200/50 to-transparent shadow-xl shadow-amber-500/10 shrink-0">
-              <img 
-                src="/profile.jpg" 
-                alt="Tanvir Hasan Akash" 
-                className="w-full h-full object-cover rounded-full bg-neutral-900 border border-black"
-                onError={(e) => {
-                  e.target.onerror = null; 
-                  e.target.src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80";
-                }}
-              />
-            </div>
-            <div>
-              <h2 className="text-amber-500 font-medium tracking-widest text-xs sm:text-sm uppercase mb-1">
-                Creative Technologist & Visual Designer
-              </h2>
-              <p className="text-xs text-neutral-400 uppercase tracking-wider">Dhaka, Bangladesh</p>
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          {/* Left Hero Typography Content */}
+          <div className="lg:col-span-7 space-y-6">
+            <ScrollReveal>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-semibold uppercase tracking-widest mb-2">
+                <Sparkles className="w-3.5 h-3.5" /> Creative Technologist & Visual Designer
+              </div>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.1}>
+              <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tighter leading-[0.9] uppercase">
+                Tanvir Hasan <br />
+                <span className="text-gray-500">Akash<span className="text-amber-500">.</span></span>
+              </h1>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.2}>
+              <p className="text-base sm:text-xl text-gray-400 font-light leading-relaxed max-w-2xl pt-2">
+                Merging logic with imagination. I engineer scalable software, design pixel-perfect interfaces, and produce cinematic visual media—delivering complete, end-to-end digital experiences.
+              </p>
+            </ScrollReveal>
+
+            <ScrollReveal delay={0.3}>
+              <div className="flex flex-wrap items-center gap-5 pt-4">
+                <a 
+                  href="#projects"
+                  onMouseEnter={handleHoverStart} 
+                  onMouseLeave={handleHoverEnd}
+                  className="px-8 py-4 bg-amber-500 text-black font-bold rounded-full hover:bg-amber-400 transition-all transform hover:scale-105 text-xs sm:text-sm tracking-widest uppercase"
+                >
+                  Explore Work
+                </a>
+                <a 
+                  href="#contact"
+                  onMouseEnter={handleHoverStart} 
+                  onMouseLeave={handleHoverEnd}
+                  className="px-8 py-4 border border-white/10 bg-white/5 backdrop-blur-md rounded-full text-white font-medium hover:bg-white/10 transition-all text-xs sm:text-sm tracking-widest uppercase"
+                >
+                  Get In Touch
+                </a>
+              </div>
+            </ScrollReveal>
           </div>
-        </ScrollReveal>
-        
-        {/* Mobile-Friendly Scaled Heading */}
-        <ScrollReveal delay={0.1}>
-          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-[12vw] leading-[0.95] text-white tracking-tighter w-full uppercase break-words">
-            Tanvir Hasan
-          </h1>
-        </ScrollReveal>
-        <ScrollReveal delay={0.2}>
-          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-[12vw] leading-[0.95] text-gray-500 tracking-tighter w-full uppercase mt-1 sm:-mt-3">
-            Akash<span className="text-amber-500">.</span>
-          </h1>
-        </ScrollReveal>
-        
-        <ScrollReveal delay={0.3} className="mt-8 sm:mt-12 max-w-2xl xl:max-w-4xl">
-          <p className="text-base sm:text-2xl lg:text-3xl text-gray-400 font-light leading-relaxed">
-            Merging logic with imagination. I engineer scalable software, design pixel-perfect interfaces, and produce cinematic visual media—delivering complete, end-to-end digital experiences.
-          </p>
-        </ScrollReveal>
+
+          {/* Right Showcase: Large Unique High-Tech Glassmorphic Profile Card */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <ScrollReveal delay={0.2} className="w-full max-w-[340px] sm:max-w-[420px]">
+              <motion.div 
+                whileHover={{ y: -8, scale: 1.02 }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="relative rounded-3xl p-3 sm:p-4 bg-gradient-to-b from-amber-500/20 via-white/[0.04] to-black/90 border border-amber-500/30 backdrop-blur-2xl shadow-2xl shadow-amber-500/10 group"
+              >
+                {/* Glowing Corner Accents */}
+                <div className="absolute top-0 left-0 w-20 h-20 bg-amber-500/10 blur-xl rounded-full pointer-events-none" />
+                <div className="absolute bottom-0 right-0 w-24 h-24 bg-purple-600/10 blur-xl rounded-full pointer-events-none" />
+
+                {/* Profile Photo Wrapper */}
+                <div className="relative w-full h-[420px] sm:h-[500px] rounded-2xl overflow-hidden bg-neutral-900 border border-white/10">
+                  <img 
+                    src="/profile.jpg" 
+                    alt="Tanvir Hasan Akash" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-[0.95] contrast-[1.05]"
+                    onError={(e) => {
+                      e.target.onerror = null; 
+                      e.target.src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80";
+                    }}
+                  />
+                  {/* Subtle Dark Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+
+                  {/* Top Live Status Badge */}
+                  <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10 text-[10px] uppercase tracking-wider text-amber-400 font-bold">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    Available For Hire
+                  </div>
+
+                  {/* Floating Skill Badges */}
+                  <div className="absolute bottom-6 left-5 right-5 space-y-3">
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1 bg-amber-500/20 backdrop-blur-md border border-amber-500/30 rounded-full text-[10px] font-mono text-amber-200">
+                        Frontend & Python
+                      </span>
+                      <span className="px-3 py-1 bg-black/60 backdrop-blur-md border border-white/10 rounded-full text-[10px] font-mono text-neutral-300">
+                        Astrophotography
+                      </span>
+                    </div>
+
+                    <div className="bg-black/80 backdrop-blur-md p-3.5 rounded-xl border border-white/10 flex justify-between items-center">
+                      <div>
+                        <h4 className="text-white text-sm font-bold tracking-tight">Md. Tanvir Hasan Akash</h4>
+                        <p className="text-neutral-400 text-[11px]">B.Sc CSE • Dhaka, Bangladesh</p>
+                      </div>
+                      <Compass className="w-5 h-5 text-amber-400 animate-spin" style={{ animationDuration: '12s' }} />
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </ScrollReveal>
+          </div>
+
+        </div>
       </motion.section>
 
       {/* EXPERTISE SECTION */}
@@ -426,13 +548,16 @@ export default function Portfolio() {
         </motion.div>
       </motion.section>
 
-      {/* FOOTER / CONTACT */}
+      {/* FOOTER / CONTACT WITH PARALLAX ORB AT BOTTOM */}
       <motion.footer 
         id="contact"
         onViewportEnter={() => setBgColor('#050505')}
         viewport={{ amount: 0.5 }}
-        className="px-6 md:px-12 lg:px-24 py-28 mt-20 border-t border-white/5 relative z-10"
+        className="px-6 md:px-12 lg:px-24 py-28 mt-20 border-t border-white/5 relative z-10 overflow-hidden"
       >
+        {/* Decorative Bottom Wireframe Ring */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-t-full border-t border-amber-500/10 pointer-events-none" />
+
         <ScrollReveal className="max-w-5xl mx-auto text-center flex flex-col items-center">
           <h2 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-white mb-6 tracking-tighter leading-none">
             Let's build <br />
@@ -442,14 +567,14 @@ export default function Portfolio() {
           <button 
             onMouseEnter={handleHoverStart} 
             onMouseLeave={handleHoverEnd}
-            className="inline-flex items-center gap-4 px-8 sm:px-10 py-4 sm:py-5 mt-8 rounded-full bg-white text-black font-bold tracking-widest uppercase text-xs sm:text-sm hover:bg-amber-500 hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-4 px-8 sm:px-10 py-4 sm:py-5 mt-8 rounded-full bg-white text-black font-bold tracking-widest uppercase text-xs sm:text-sm hover:bg-amber-500 hover:scale-105 transition-all duration-300 shadow-xl shadow-amber-500/10"
           >
             <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
             Contact Me
           </button>
 
           <div className="mt-24 w-full flex flex-col md:flex-row items-center justify-between text-xs sm:text-sm text-gray-600 border-t border-white/10 pt-8 uppercase tracking-widest gap-4">
-            <p>© {new Date().getFullYear()} Tanvir Hasan Akash.</p>
+            <p>© {new Date().getFullYear()} Tanvir Hasan Akash. All rights reserved.</p>
             <div className="flex gap-8">
               <a href="#" className="hover:text-amber-500 transition-colors">LinkedIn</a>
               <a href="#" className="hover:text-amber-500 transition-colors">GitHub</a>
