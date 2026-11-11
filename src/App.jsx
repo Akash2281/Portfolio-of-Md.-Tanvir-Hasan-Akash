@@ -84,11 +84,11 @@ const showcaseItems = [
 
 // --- REUSABLE ANIMATION COMPONENTS ---
 const ScrollReveal = ({ children, delay = 0, className = "", width = "100%" }) => (
-  <div style={{ width, overflow: "hidden" }} className={className}>
+  <div style={{ width }} className={className}>
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
+      initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
+      viewport={{ once: true, margin: "-5%" }}
       transition={{ duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
@@ -108,7 +108,7 @@ const staggerContainer = {
 };
 
 const staggerItem = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
 };
 
@@ -120,7 +120,6 @@ export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxData, setLightboxData] = useState(null);
 
-  // Custom Cursor tracking
   useEffect(() => {
     const handleMouseMove = (e) => {
       setCursorPos({ x: e.clientX, y: e.clientY });
@@ -142,7 +141,7 @@ export default function Portfolio() {
       transition={{ duration: 1.2, ease: "easeInOut" }}
       className="relative min-h-screen text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100"
     >
-      {/* Custom Cursor (Hidden via CSS on touch devices) */}
+      {/* Custom Cursor */}
       <motion.div
         className="fixed top-0 left-0 w-4 h-4 bg-amber-500 rounded-full pointer-events-none z-[100] mix-blend-difference hidden sm:block"
         animate={{ 
@@ -154,7 +153,6 @@ export default function Portfolio() {
         transition={{ type: "spring", stiffness: 350, damping: 28, mass: 0.5 }}
       />
       
-      {/* Global CSS for touch-device cursor hiding & smooth scrolling */}
       <style dangerouslySetInnerHTML={{__html: `
         @media (pointer: coarse) { .hidden-on-touch { display: none !important; } }
         html { scroll-behavior: smooth; }
@@ -174,7 +172,7 @@ export default function Portfolio() {
       `}} />
 
       {/* HEADER */}
-      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-6 md:px-12 backdrop-blur-xl border-b border-white/5 bg-transparent">
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-5 md:px-12 backdrop-blur-xl border-b border-white/5 bg-black/40">
         <a 
           href="#" 
           onMouseEnter={handleHoverStart} 
@@ -203,27 +201,45 @@ export default function Portfolio() {
         id="hero"
         onViewportEnter={() => setBgColor('#050505')}
         viewport={{ amount: 0.5 }}
-        className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-32 pb-20 max-w-[1920px] mx-auto w-full relative z-10"
+        className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-28 pb-16 max-w-[1920px] mx-auto w-full relative z-10"
       >
         <ScrollReveal>
-          <h2 className="text-amber-500/80 font-medium tracking-widest text-xs md:text-sm uppercase mb-6">
-            Creative Technologist & Visual Designer
-          </h2>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
+            {/* Profile Image Avatar */}
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-gradient-to-tr from-amber-500 via-amber-200/50 to-transparent shadow-xl shadow-amber-500/10 shrink-0">
+              <img 
+                src="/profile.jpg" 
+                alt="Tanvir Hasan Akash" 
+                className="w-full h-full object-cover rounded-full bg-neutral-900 border border-black"
+                onError={(e) => {
+                  e.target.onerror = null; 
+                  e.target.src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80";
+                }}
+              />
+            </div>
+            <div>
+              <h2 className="text-amber-500 font-medium tracking-widest text-xs sm:text-sm uppercase mb-1">
+                Creative Technologist & Visual Designer
+              </h2>
+              <p className="text-xs text-neutral-400 uppercase tracking-wider">Dhaka, Bangladesh</p>
+            </div>
+          </div>
         </ScrollReveal>
         
+        {/* Mobile-Friendly Scaled Heading */}
         <ScrollReveal delay={0.1}>
-          <h1 className="font-serif text-[15vw] leading-[0.85] text-white tracking-tighter w-full uppercase break-words">
+          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-[12vw] leading-[0.95] text-white tracking-tighter w-full uppercase break-words">
             Tanvir Hasan
           </h1>
         </ScrollReveal>
         <ScrollReveal delay={0.2}>
-          <h1 className="font-serif text-[15vw] leading-[0.85] text-gray-600 tracking-tighter w-full uppercase -mt-2 sm:-mt-6">
+          <h1 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-[12vw] leading-[0.95] text-gray-500 tracking-tighter w-full uppercase mt-1 sm:-mt-3">
             Akash<span className="text-amber-500">.</span>
           </h1>
         </ScrollReveal>
         
-        <ScrollReveal delay={0.3} className="mt-12 sm:mt-16 max-w-2xl xl:max-w-4xl">
-          <p className="text-lg sm:text-2xl lg:text-3xl text-gray-400 font-light leading-relaxed">
+        <ScrollReveal delay={0.3} className="mt-8 sm:mt-12 max-w-2xl xl:max-w-4xl">
+          <p className="text-base sm:text-2xl lg:text-3xl text-gray-400 font-light leading-relaxed">
             Merging logic with imagination. I engineer scalable software, design pixel-perfect interfaces, and produce cinematic visual media—delivering complete, end-to-end digital experiences.
           </p>
         </ScrollReveal>
@@ -234,10 +250,10 @@ export default function Portfolio() {
         id="expertise"
         onViewportEnter={() => setBgColor('#0f0f11')}
         viewport={{ amount: 0.3 }}
-        className="px-6 md:px-12 lg:px-24 py-32 max-w-[1920px] mx-auto w-full relative z-10"
+        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
       >
         <ScrollReveal>
-          <h3 className="font-serif text-5xl md:text-7xl text-white mb-16 tracking-tight">
+          <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white mb-16 tracking-tight">
             Arsenal & Expertise
           </h3>
         </ScrollReveal>
@@ -272,11 +288,11 @@ export default function Portfolio() {
         id="projects"
         onViewportEnter={() => setBgColor('#0d0a0f')}
         viewport={{ amount: 0.2 }}
-        className="px-6 md:px-12 lg:px-24 py-32 max-w-[1920px] mx-auto w-full relative z-10"
+        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
       >
         <ScrollReveal>
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8 border-b border-white/5 pb-10">
-            <h3 className="font-serif text-5xl md:text-7xl text-white tracking-tight">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 border-b border-white/5 pb-10">
+            <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white tracking-tight">
               Flagship Software
             </h3>
             <p className="text-gray-400 max-w-sm text-sm uppercase tracking-widest">
@@ -289,11 +305,10 @@ export default function Portfolio() {
           {projects.map((project, idx) => (
             <ScrollReveal key={idx}>
               <div 
-                className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors duration-500 ${project.featured ? 'xl:flex-row' : 'xl:flex-row-reverse'} min-h-[600px]`}
+                className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors duration-500 ${project.featured ? 'xl:flex-row' : 'xl:flex-row-reverse'} min-h-[550px]`}
               >
-                {/* Content Half */}
-                <div className="p-8 sm:p-16 xl:p-24 flex flex-col justify-center w-full xl:w-1/2">
-                  <div className="flex flex-wrap gap-2 mb-10">
+                <div className="p-8 sm:p-14 xl:p-20 flex flex-col justify-center w-full xl:w-1/2">
+                  <div className="flex flex-wrap gap-2 mb-8">
                     {project.tags.map(tag => (
                       <span key={tag} className="px-4 py-1.5 text-[10px] sm:text-xs tracking-widest uppercase text-amber-200/60 border border-amber-200/10 rounded-full">
                         {tag}
@@ -301,37 +316,36 @@ export default function Portfolio() {
                     ))}
                   </div>
                   
-                  <h5 className="text-amber-500 font-medium tracking-widest text-sm uppercase mb-4">
+                  <h5 className="text-amber-500 font-medium tracking-widest text-sm uppercase mb-3">
                     {project.subtitle}
                   </h5>
-                  <h4 className="font-serif text-4xl sm:text-6xl text-white mb-8 tracking-tight group-hover:text-amber-50 transition-colors">
+                  <h4 className="font-serif text-3xl sm:text-5xl text-white mb-6 tracking-tight group-hover:text-amber-50 transition-colors">
                     {project.title}
                   </h4>
-                  <p className="text-gray-400 text-lg sm:text-xl font-light leading-relaxed mb-12 max-w-xl">
+                  <p className="text-gray-400 text-base sm:text-lg font-light leading-relaxed mb-10 max-w-xl">
                     {project.desc}
                   </p>
                   
                   <button 
                     onMouseEnter={handleHoverStart} 
                     onMouseLeave={handleHoverEnd}
-                    className="flex items-center gap-4 text-white font-medium group/btn w-fit text-sm tracking-widest uppercase"
+                    className="flex items-center gap-4 text-white font-medium group/btn w-fit text-xs sm:text-sm tracking-widest uppercase"
                   >
                     View Case Study
                     <span className="p-3 rounded-full bg-white/5 group-hover/btn:bg-amber-500 group-hover/btn:text-black transition-all duration-300 group-hover/btn:scale-110">
-                      <ArrowUpRight className="w-5 h-5" />
+                      <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5" />
                     </span>
                   </button>
                 </div>
 
-                {/* Mockup Half */}
-                <div className={`relative w-full xl:w-1/2 bg-black min-h-[400px] xl:min-h-full overflow-hidden ${project.featured ? 'xl:border-l' : 'xl:border-r'} border-white/5`}>
+                <div className={`relative w-full xl:w-1/2 bg-black min-h-[350px] xl:min-h-full overflow-hidden ${project.featured ? 'xl:border-l' : 'xl:border-r'} border-white/5`}>
                   <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '48px 48px' }}></div>
                   <motion.div 
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 1.5, ease: "easeOut" }}
                     className="absolute inset-0 bg-gradient-to-tr from-transparent to-amber-500/10"
                   />
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/5 font-serif text-3xl sm:text-5xl tracking-widest uppercase text-center w-full">
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white/10 font-serif text-2xl sm:text-4xl tracking-widest uppercase text-center w-full">
                     {project.title} <br/> Visuals
                   </div>
                 </div>
@@ -341,21 +355,20 @@ export default function Portfolio() {
         </div>
       </motion.section>
 
-      {/* CREATIVE SHOWCASE (BENTO GRID) */}
+      {/* CREATIVE SHOWCASE */}
       <motion.section 
         id="showcase"
         onViewportEnter={() => setBgColor('#080808')}
         viewport={{ amount: 0.1 }}
-        className="px-6 md:px-12 lg:px-24 py-32 max-w-[1920px] mx-auto w-full relative z-10"
+        className="px-6 md:px-12 lg:px-24 py-28 max-w-[1920px] mx-auto w-full relative z-10"
       >
         <ScrollReveal>
-          <h3 className="font-serif text-5xl md:text-7xl text-white mb-12 tracking-tight">
+          <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white mb-10 tracking-tight">
             Creative Visuals
           </h3>
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          {/* Filters */}
           <div className="flex flex-wrap gap-2 sm:gap-4 mb-12">
             {['All', 'Photography', 'Video', 'Graphic Design', 'AI Art'].map(cat => (
               <button
@@ -363,7 +376,7 @@ export default function Portfolio() {
                 onClick={() => setActiveFilter(cat)}
                 onMouseEnter={handleHoverStart} 
                 onMouseLeave={handleHoverEnd}
-                className={`px-5 py-2.5 rounded-full text-xs font-medium tracking-widest uppercase transition-all duration-300 ${
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-medium tracking-widest uppercase transition-all duration-300 ${
                   activeFilter === cat 
                   ? 'bg-amber-500 text-black shadow-[0_0_20px_rgba(245,158,11,0.2)]' 
                   : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
@@ -375,7 +388,6 @@ export default function Portfolio() {
           </div>
         </ScrollReveal>
 
-        {/* Bento Grid layout */}
         <motion.div layout className="bento-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           <AnimatePresence>
             {filteredShowcase.map((item) => (
@@ -390,9 +402,8 @@ export default function Portfolio() {
                 onMouseEnter={handleHoverStart} 
                 onMouseLeave={handleHoverEnd}
                 className={`size-${item.size} group relative bg-white/[0.03] border border-white/5 rounded-2xl overflow-hidden cursor-pointer hover:border-amber-500/40 transition-colors`}
-                style={{ minHeight: '250px' }}
+                style={{ minHeight: '240px' }}
               >
-                {/* Mock Image Gradient Pattern */}
                 <div className="absolute inset-0 bg-gradient-to-br from-black/40 to-black/90 group-hover:scale-105 transition-transform duration-700"></div>
                 
                 <div className="absolute inset-0 flex flex-col justify-between p-6">
@@ -401,11 +412,11 @@ export default function Portfolio() {
                   </span>
                   
                   <div className="flex justify-between items-end">
-                    <h4 className="text-white font-medium text-lg sm:text-xl leading-tight max-w-[80%]">
+                    <h4 className="text-white font-medium text-base sm:text-lg leading-tight max-w-[80%]">
                       {item.title}
                     </h4>
-                    <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-amber-500 group-hover:text-black transition-all">
-                      {item.type === 'Video' ? <Play className="w-4 h-4 ml-1" /> : <ImageIcon className="w-4 h-4" />}
+                    <div className="w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-amber-500 group-hover:text-black transition-all">
+                      {item.type === 'Video' ? <Play className="w-4 h-4 ml-0.5" /> : <ImageIcon className="w-4 h-4" />}
                     </div>
                   </div>
                 </div>
@@ -420,10 +431,10 @@ export default function Portfolio() {
         id="contact"
         onViewportEnter={() => setBgColor('#050505')}
         viewport={{ amount: 0.5 }}
-        className="px-6 md:px-12 lg:px-24 py-32 mt-20 border-t border-white/5 relative z-10"
+        className="px-6 md:px-12 lg:px-24 py-28 mt-20 border-t border-white/5 relative z-10"
       >
         <ScrollReveal className="max-w-5xl mx-auto text-center flex flex-col items-center">
-          <h2 className="font-serif text-[10vw] sm:text-[8vw] md:text-7xl lg:text-9xl text-white mb-8 tracking-tighter leading-none">
+          <h2 className="font-serif text-5xl sm:text-7xl md:text-8xl lg:text-9xl text-white mb-6 tracking-tighter leading-none">
             Let's build <br />
             <span className="text-gray-600 italic">the future.</span>
           </h2>
@@ -431,15 +442,15 @@ export default function Portfolio() {
           <button 
             onMouseEnter={handleHoverStart} 
             onMouseLeave={handleHoverEnd}
-            className="inline-flex items-center gap-4 px-10 py-5 mt-12 rounded-full bg-white text-black font-bold tracking-widest uppercase text-sm hover:bg-amber-500 hover:scale-105 transition-all duration-300"
+            className="inline-flex items-center gap-4 px-8 sm:px-10 py-4 sm:py-5 mt-8 rounded-full bg-white text-black font-bold tracking-widest uppercase text-xs sm:text-sm hover:bg-amber-500 hover:scale-105 transition-all duration-300"
           >
-            <Mail className="w-5 h-5" />
+            <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
             Contact Me
           </button>
 
-          <div className="mt-32 w-full flex flex-col md:flex-row items-center justify-between text-xs sm:text-sm text-gray-600 border-t border-white/10 pt-10 uppercase tracking-widest">
+          <div className="mt-24 w-full flex flex-col md:flex-row items-center justify-between text-xs sm:text-sm text-gray-600 border-t border-white/10 pt-8 uppercase tracking-widest gap-4">
             <p>© {new Date().getFullYear()} Tanvir Hasan Akash.</p>
-            <div className="flex gap-8 mt-6 md:mt-0">
+            <div className="flex gap-8">
               <a href="#" className="hover:text-amber-500 transition-colors">LinkedIn</a>
               <a href="#" className="hover:text-amber-500 transition-colors">GitHub</a>
               <a href="#" className="hover:text-amber-500 transition-colors">Instagram</a>
@@ -463,24 +474,23 @@ export default function Portfolio() {
               onMouseLeave={handleHoverEnd}
               className="absolute top-6 right-6 sm:top-12 sm:right-12 text-white/50 hover:text-white hover:rotate-90 transition-all duration-300"
             >
-              <X className="w-10 h-10" />
+              <X className="w-8 h-8 sm:w-10 sm:h-10" />
             </button>
             
             <div className="relative w-full max-w-6xl aspect-video bg-[#111] border border-white/10 rounded-2xl sm:rounded-[3rem] overflow-hidden flex flex-col items-center justify-center">
-              {/* Mock content rendering */}
               {lightboxData.type === 'Video' ? (
-                <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center pl-2">
-                  <Play className="w-10 h-10 text-white" />
+                <div className="w-20 h-20 rounded-full bg-white/10 flex items-center justify-center pl-1">
+                  <Play className="w-8 h-8 text-white" />
                 </div>
               ) : (
-                <ImageIcon className="w-24 h-24 text-white/10" />
+                <ImageIcon className="w-20 h-20 text-white/10" />
               )}
               
-              <div className="absolute bottom-0 left-0 right-0 p-8 sm:p-12 bg-gradient-to-t from-black/90 to-transparent">
+              <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-12 bg-gradient-to-t from-black/90 to-transparent">
                 <span className="text-amber-500 text-xs font-bold tracking-widest uppercase mb-2 block">
                   {lightboxData.type}
                 </span>
-                <h3 className="font-serif text-3xl sm:text-5xl text-white">
+                <h3 className="font-serif text-2xl sm:text-5xl text-white">
                   {lightboxData.title}
                 </h3>
               </div>
