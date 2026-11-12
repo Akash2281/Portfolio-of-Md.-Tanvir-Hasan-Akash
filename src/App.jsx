@@ -11,11 +11,11 @@ import {
   ArrowUpRight,
   Mail,
   X,
-  Play,
   Image as ImageIcon,
   Sparkles,
   Compass,
-  Menu
+  Menu,
+  Maximize2
 } from 'lucide-react';
 
 // --- DATA ---
@@ -76,15 +76,101 @@ const projects = [
   }
 ];
 
+// --- CURATED PHOTOGRAPHY SHOWCASE (ARRANGED BY ASPECT RATIO & VISUAL FLOW) ---
 const showcaseItems = [
-  { id: 1, type: "Photography", title: "Milky Way Astrophotography", size: "tall", img: "https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?w=800&auto=format&fit=crop&q=80" },
-  { id: 2, type: "Video", title: "Automotive Commercial Edit", size: "wide", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&auto=format&fit=crop&q=80" },
-  { id: 3, type: "Graphic Design", title: "Brand Identity - Vector", size: "small", img: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=800&auto=format&fit=crop&q=80" },
-  { id: 4, type: "AI Art", title: "Cyberpunk Cityscape Generation", size: "large", img: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=800&auto=format&fit=crop&q=80" },
-  { id: 5, type: "Photography", title: "Urban Portrait Series", size: "wide", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80" },
-  { id: 6, type: "Graphic Design", title: "UI/UX Mobile App Concept", size: "tall", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=80" },
-  { id: 7, type: "Video", title: "Travel Documentary Color Grade", size: "small", img: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&auto=format&fit=crop&q=80" },
-  { id: 8, type: "AI Art", title: "Surrealist Concept Render", size: "small", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=800&auto=format&fit=crop&q=80" }
+  { 
+    id: 1, 
+    type: "Astrophotography", 
+    title: "Full Lunar Phase", 
+    size: "large", // 1:1 Square -> Featured 2x2
+    img: "/imgi_11_625051153_18120327700570873_4266802532387549881_n_2.jpg" 
+  },
+  { 
+    id: 2, 
+    type: "Nature & Sky", 
+    title: "Golden Sunset Silhouette", 
+    size: "tall", // 4:5 Portrait -> 1x2 Vertical
+    img: "/imgi_9_621995460_18093394549950412_5762161839308906587_n.jpg" 
+  },
+  { 
+    id: 3, 
+    type: "Night & Architecture", 
+    title: "Neon Monument Trails", 
+    size: "wide", // 16:9 Widescreen -> 2x1 Horizontal
+    img: "/imgi_11_619239099_17984581544944181_5072813075361084055_n.jpg" 
+  },
+  { 
+    id: 4, 
+    type: "Nature & Sky", 
+    title: "Storm Over the Horizon", 
+    size: "wide", // 3:2 Landscape -> 2x1 Horizontal
+    img: "/imgi_7_626246539_18090689521833634_6143370647279863144_n_2.jpg" 
+  },
+  { 
+    id: 5, 
+    type: "Street & Documentary", 
+    title: "Night Fish Market", 
+    size: "large", // 1:1 Square -> Featured 2x2
+    img: "/imgi_6_476064903_18374015197136361_7143137429884065300_n_2.jpg" 
+  },
+  { 
+    id: 6, 
+    type: "Nature & Sky", 
+    title: "Dusk Horizon & Tower", 
+    size: "wide", // 3:2 Landscape -> 2x1 Horizontal
+    img: "/imgi_16_625509362_18343597234233127_3595041966976680061_n.jpg" 
+  },
+  { 
+    id: 7, 
+    type: "Night & Architecture", 
+    title: "Minaret in Monochrome", 
+    size: "small", // 1:1 Square -> 1x1
+    img: "/imgi_5_888990337_18475127293136361_1945558014263150020_n_2.webp" 
+  },
+  { 
+    id: 8, 
+    type: "Nature & Sky", 
+    title: "Emerald Paddy Fields", 
+    size: "small", // 1:1 Square -> 1x1
+    img: "/imgi_14_623797860_18115162966527508_3379638286040561973_n_2.jpg" 
+  },
+  { 
+    id: 9, 
+    type: "Nature & Sky", 
+    title: "Palm Twilight", 
+    size: "wide", // 3:2 Landscape -> 2x1 Horizontal
+    img: "/imgi_8_622917394_18064195031270947_3814834344704912327_n.jpg" 
+  },
+  { 
+    id: 10, 
+    type: "Street & Documentary", 
+    title: "Stacks of Knowledge", 
+    size: "small", // 1:1 Square -> 1x1
+    img: "/imgi_2_619353938_17995740581902916_4573711031424309312_n_2.jpg" 
+  },
+  { 
+    id: 11, 
+    type: "Minimal & Macro", 
+    title: "Window Light & Shadow", 
+    size: "small", // 1:1 Square -> 1x1
+    img: "/imgi_5_625012291_18306449926260013_9199105627941839558_n_2.jpg" 
+  },
+  { 
+    id: 12, 
+    type: "Minimal & Macro", 
+    title: "Crimson Spice Macro", 
+    size: "small", // 1:1 Square -> 1x1
+    img: "/imgi_13_623364824_18084830125921540_3769390656534720896_n_2.jpg" 
+  }
+];
+
+const categories = [
+  'All', 
+  'Astrophotography', 
+  'Nature & Sky', 
+  'Night & Architecture', 
+  'Street & Documentary', 
+  'Minimal & Macro'
 ];
 
 // --- REUSABLE ANIMATION COMPONENTS ---
@@ -214,7 +300,7 @@ export default function Portfolio() {
         transition={{ type: "spring", stiffness: 350, damping: 28, mass: 0.5 }}
       />
 
-      {/* 120FPS Smooth Scroll Global CSS */}
+      {/* 120FPS Smooth Scroll & Responsive Bento Grid CSS */}
       <style dangerouslySetInnerHTML={{__html: `
         @media (pointer: coarse) { .hidden-on-touch { display: none !important; } }
         html { 
@@ -227,17 +313,47 @@ export default function Portfolio() {
           overscroll-behavior-y: none;
         }
         @media (pointer: coarse) { body { cursor: auto; } }
-        .bento-grid { display: grid; grid-auto-flow: dense; gap: 1rem; }
-        .size-small { grid-column: span 1; grid-row: span 1; }
-        .size-wide { grid-column: span 1; grid-row: span 1; }
-        .size-tall { grid-column: span 1; grid-row: span 1; }
-        .size-large { grid-column: span 1; grid-row: span 1; }
+        
+        .bento-grid { 
+          display: grid; 
+          grid-auto-flow: dense; 
+          grid-auto-rows: minmax(240px, auto);
+          gap: 1rem; 
+        }
+        .size-small { grid-column: span 1; grid-row: span 1; aspect-ratio: 1 / 1; }
+        .size-wide { grid-column: span 1; grid-row: span 1; aspect-ratio: 3 / 2; }
+        .size-tall { grid-column: span 1; grid-row: span 1; aspect-ratio: 4 / 5; }
+        .size-large { grid-column: span 1; grid-row: span 1; aspect-ratio: 1 / 1; }
         
         @media (min-width: 640px) {
-          .bento-grid { gap: 1.25rem; }
-          .size-wide { grid-column: span 2; grid-row: span 1; }
-          .size-tall { grid-column: span 1; grid-row: span 2; }
-          .size-large { grid-column: span 2; grid-row: span 2; }
+          .bento-grid { gap: 1.25rem; grid-auto-rows: 260px; }
+          .size-small { grid-column: span 1; grid-row: span 1; aspect-ratio: auto; }
+          .size-wide { grid-column: span 2; grid-row: span 1; aspect-ratio: auto; }
+          .size-tall { grid-column: span 1; grid-row: span 2; aspect-ratio: auto; }
+          .size-large { grid-column: span 2; grid-row: span 2; aspect-ratio: auto; }
+        }
+
+        /* Metallic Shimmer Sweep on Photo Hover */
+        .photo-shimmer::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -120%;
+          width: 60%;
+          height: 100%;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.14),
+            transparent
+          );
+          transform: skewX(-25deg);
+          transition: left 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+          pointer-events: none;
+          z-index: 15;
+        }
+        .photo-shimmer:hover::after {
+          left: 160%;
         }
         
         /* 120 FPS Hardware Acceleration Helper */
@@ -512,23 +628,29 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* CREATIVE SHOWCASE */}
+      {/* CREATIVE PHOTOGRAPHY SHOWCASE */}
       <section 
         id="showcase"
         className="px-6 md:px-12 lg:px-24 py-24 max-w-[1920px] mx-auto w-full relative z-10 border-t border-white/5"
       >
         <ScrollReveal>
-          <div className="mb-8">
-            <span className="text-xs uppercase tracking-[0.3em] text-amber-500 font-bold block mb-2">Portfolio Gallery</span>
-            <h3 className="font-serif text-3xl sm:text-6xl md:text-7xl text-white tracking-tight">
-              Creative Visuals
-            </h3>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+            <div>
+              <span className="text-xs uppercase tracking-[0.3em] text-amber-500 font-bold block mb-2">Captured Through My Lens</span>
+              <h3 className="font-serif text-3xl sm:text-6xl md:text-7xl text-white tracking-tight">
+                Photography Showcase
+              </h3>
+            </div>
+            <p className="text-neutral-400 max-w-sm text-xs sm:text-sm uppercase tracking-widest leading-relaxed">
+              Curated frames across astrophotography, nature, architecture, and street stories.
+            </p>
           </div>
         </ScrollReveal>
 
+        {/* Category Filter Tabs */}
         <ScrollReveal delay={0.1}>
-          <div className="flex flex-wrap gap-2 mb-10">
-            {['All', 'Photography', 'Video', 'Graphic Design', 'AI Art'].map(cat => (
+          <div className="flex flex-wrap gap-2 mb-12">
+            {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveFilter(cat)}
@@ -536,8 +658,8 @@ export default function Portfolio() {
                 onMouseLeave={handleHoverEnd}
                 className={`px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 ${
                   activeFilter === cat 
-                  ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' 
-                  : 'bg-white/5 border border-white/10 text-neutral-400 hover:text-white'
+                  ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/25 scale-105' 
+                  : 'bg-white/5 border border-white/10 text-neutral-400 hover:text-white hover:border-white/25'
                 }`}
               >
                 {cat}
@@ -546,41 +668,55 @@ export default function Portfolio() {
           </div>
         </ScrollReveal>
 
-        <motion.div layout className="bento-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          <AnimatePresence>
+        {/* Aspect-Ratio Smart Bento Grid with Hover Animations */}
+        <motion.div layout className="bento-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+          <AnimatePresence mode="popLayout">
             {filteredShowcase.map((item) => (
               <motion.div
                 key={item.id}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.4 }}
+                initial={{ opacity: 0, scale: 0.94, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.94 }}
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setLightboxData(item)}
                 onMouseEnter={handleHoverStart} 
                 onMouseLeave={handleHoverEnd}
-                className={`size-${item.size} group relative bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden cursor-pointer hover:border-amber-500/50 transition-all`}
-                style={{ minHeight: '220px' }}
+                className={`size-${item.size} photo-shimmer group relative bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden cursor-pointer hover:border-amber-500/60 hover:shadow-2xl hover:shadow-amber-500/15 transition-all duration-500`}
               >
+                {/* Image with Smooth Zoom & Contrast Lift */}
                 <img 
                   src={item.img} 
                   alt={item.title} 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter brightness-90 group-hover:brightness-100"
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 filter brightness-[0.88] contrast-[1.03] group-hover:brightness-105 group-hover:contrast-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                 
+                {/* Subtle Vignette & Bottom Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-black/10 opacity-85 group-hover:opacity-95 transition-opacity duration-500" />
+                
+                {/* Inner Glowing Frame Border on Hover */}
+                <div className="absolute inset-2 rounded-xl border border-amber-400/0 group-hover:border-amber-400/30 transition-colors duration-500 pointer-events-none z-20" />
+
+                {/* Card Content Overlay */}
                 <div className="absolute inset-0 flex flex-col justify-between p-5 sm:p-6 z-10">
-                  <span className="text-[9px] sm:text-[10px] font-bold tracking-widest uppercase text-amber-400 bg-black/70 backdrop-blur-md w-fit px-2.5 py-1 rounded-full border border-white/10">
-                    {item.type}
-                  </span>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[9px] sm:text-[10px] font-bold tracking-widest uppercase text-amber-400 bg-black/75 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 group-hover:border-amber-500/40 transition-colors">
+                      {item.type}
+                    </span>
+                    <span className="w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-white/70 opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 group-hover:bg-amber-500 group-hover:text-black transition-all duration-300">
+                      <Maximize2 className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
                   
-                  <div className="flex justify-between items-end">
-                    <h4 className="text-white font-bold text-sm sm:text-base leading-tight max-w-[80%]">
+                  <div className="transform translate-y-1 group-hover:translate-y-0 transition-transform duration-300">
+                    <h4 className="text-white font-bold text-base sm:text-lg leading-tight group-hover:text-amber-200 transition-colors">
                       {item.title}
                     </h4>
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-amber-500 group-hover:text-black transition-all">
-                      {item.type === 'Video' ? <Play className="w-4 h-4 ml-0.5" /> : <ImageIcon className="w-4 h-4" />}
-                    </div>
+                    <p className="text-[11px] text-neutral-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center gap-1.5">
+                      <ImageIcon className="w-3 h-3 text-amber-400" /> Click to view full frame
+                    </p>
                   </div>
                 </div>
               </motion.div>
@@ -621,7 +757,7 @@ export default function Portfolio() {
         </ScrollReveal>
       </footer>
 
-      {/* LIGHTBOX MODAL */}
+      {/* FULL-FRAME LIGHTBOX MODAL (RESPECTS TRUE ASPECT RATIO) */}
       <AnimatePresence>
         {lightboxData && (
           <motion.div 
@@ -629,35 +765,42 @@ export default function Portfolio() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setLightboxData(null)}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4 sm:p-12"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-2xl p-4 sm:p-10"
           >
             <motion.div 
-              initial={{ scale: 0.95 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.95 }}
+              initial={{ scale: 0.94, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.94, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-5xl aspect-video bg-[#111] border border-white/10 rounded-2xl overflow-hidden flex flex-col items-center justify-center"
+              className="relative max-w-5xl max-h-[90vh] bg-[#0b0b0e] border border-white/15 rounded-2xl overflow-hidden flex flex-col items-center justify-center shadow-2xl"
             >
               <button 
                 onClick={() => setLightboxData(null)}
-                className="absolute top-4 right-4 sm:top-6 sm:right-6 text-white/50 hover:text-white transition-colors z-20 p-2 rounded-full bg-black/50"
+                className="absolute top-4 right-4 text-white/70 hover:text-amber-400 transition-colors z-20 p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-white/10"
+                aria-label="Close Preview"
               >
-                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+                <X className="w-5 h-5" />
               </button>
 
               <img 
                 src={lightboxData.img} 
                 alt={lightboxData.title} 
-                className="w-full h-full object-cover"
+                className="max-h-[78vh] w-auto object-contain bg-black"
               />
               
-              <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-10 bg-gradient-to-t from-black via-black/80 to-transparent">
-                <span className="text-amber-400 text-[10px] sm:text-xs font-bold tracking-widest uppercase mb-1 block">
-                  {lightboxData.type}
+              <div className="w-full p-5 sm:p-6 bg-[#0d0d11] border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <span className="text-amber-400 text-[10px] sm:text-xs font-bold tracking-widest uppercase block mb-0.5">
+                    {lightboxData.type}
+                  </span>
+                  <h3 className="font-serif text-lg sm:text-2xl text-white">
+                    {lightboxData.title}
+                  </h3>
+                </div>
+                <span className="text-[11px] font-mono text-neutral-500">
+                  Md. Tanvir Hasan Akash Photography
                 </span>
-                <h3 className="font-serif text-xl sm:text-4xl text-white">
-                  {lightboxData.title}
-                </h3>
               </div>
             </motion.div>
           </motion.div>
