@@ -76,91 +76,91 @@ const projects = [
   }
 ];
 
-// --- CURATED PHOTOGRAPHY SHOWCASE (ARRANGED BY ASPECT RATIO & VISUAL FLOW) ---
+// --- CURATED PHOTOGRAPHY SHOWCASE (EXACT ORIGINAL FILENAMES) ---
 const showcaseItems = [
   { 
     id: 1, 
     type: "Astrophotography", 
     title: "Full Lunar Phase", 
-    size: "large", // 1:1 Square -> Featured 2x2
-    img: "/imgi_11_625051153_18120327700570873_4266802532387549881_n_2.jpg" 
+    size: "large",
+    img: "/imgi_11_625051153_18120327700570873_4266802532387549881_n.jpg" 
   },
   { 
     id: 2, 
     type: "Nature & Sky", 
     title: "Golden Sunset Silhouette", 
-    size: "tall", // 4:5 Portrait -> 1x2 Vertical
+    size: "tall",
     img: "/imgi_9_621995460_18093394549950412_5762161839308906587_n.jpg" 
   },
   { 
     id: 3, 
     type: "Night & Architecture", 
     title: "Neon Monument Trails", 
-    size: "wide", // 16:9 Widescreen -> 2x1 Horizontal
+    size: "wide",
     img: "/imgi_11_619239099_17984581544944181_5072813075361084055_n.jpg" 
   },
   { 
     id: 4, 
     type: "Nature & Sky", 
     title: "Storm Over the Horizon", 
-    size: "wide", // 3:2 Landscape -> 2x1 Horizontal
-    img: "/imgi_7_626246539_18090689521833634_6143370647279863144_n_2.jpg" 
+    size: "wide",
+    img: "/imgi_7_626246539_18090689521833634_6143370647279863144_n.jpg" 
   },
   { 
     id: 5, 
     type: "Street & Documentary", 
     title: "Night Fish Market", 
-    size: "large", // 1:1 Square -> Featured 2x2
-    img: "/imgi_6_476064903_18374015197136361_7143137429884065300_n_2.jpg" 
+    size: "large",
+    img: "/imgi_6_476064903_18374015197136361_7143137429884065300_n.jpg" 
   },
   { 
     id: 6, 
     type: "Nature & Sky", 
     title: "Dusk Horizon & Tower", 
-    size: "wide", // 3:2 Landscape -> 2x1 Horizontal
+    size: "wide",
     img: "/imgi_16_625509362_18343597234233127_3595041966976680061_n.jpg" 
   },
   { 
     id: 7, 
     type: "Night & Architecture", 
     title: "Minaret in Monochrome", 
-    size: "small", // 1:1 Square -> 1x1
-    img: "/imgi_5_888990337_18475127293136361_1945558014263150020_n_2.webp" 
+    size: "small",
+    img: "/imgi_5_888990337_18475127293136361_1945558014263150020_n.webp" 
   },
   { 
     id: 8, 
     type: "Nature & Sky", 
     title: "Emerald Paddy Fields", 
-    size: "small", // 1:1 Square -> 1x1
-    img: "/imgi_14_623797860_18115162966527508_3379638286040561973_n_2.jpg" 
+    size: "small",
+    img: "/imgi_14_623797860_18115162966527508_3379638286040561973_n.jpg" 
   },
   { 
     id: 9, 
     type: "Nature & Sky", 
     title: "Palm Twilight", 
-    size: "wide", // 3:2 Landscape -> 2x1 Horizontal
+    size: "wide",
     img: "/imgi_8_622917394_18064195031270947_3814834344704912327_n.jpg" 
   },
   { 
     id: 10, 
     type: "Street & Documentary", 
     title: "Stacks of Knowledge", 
-    size: "small", // 1:1 Square -> 1x1
-    img: "/imgi_2_619353938_17995740581902916_4573711031424309312_n_2.jpg" 
+    size: "small",
+    img: "/imgi_2_619353938_17995740581902916_4573711031424309312_n.jpg" 
   },
   { 
     id: 11, 
     type: "Minimal & Macro", 
     title: "Window Light & Shadow", 
-    size: "small", // 1:1 Square -> 1x1
-    img: "/imgi_5_625012291_18306449926260013_9199105627941839558_n_2.jpg" 
+    size: "small",
+    img: "/imgi_5_625012291_18306449926260013_9199105627941839558_n.jpg" 
   },
   { 
     id: 12, 
     type: "Minimal & Macro", 
     title: "Crimson Spice Macro", 
-    size: "small", // 1:1 Square -> 1x1
-    img: "/imgi_13_623364824_18084830125921540_3769390656534720896_n_2.jpg" 
+    size: "small",
+    img: "/imgi_13_623364824_18084830125921540_3769390656534720896_n.jpg" 
   }
 ];
 
@@ -232,6 +232,14 @@ export default function Portfolio() {
   const filteredShowcase = activeFilter === 'All' 
     ? showcaseItems 
     : showcaseItems.filter(item => item.type === activeFilter);
+
+  // Smart image fallback handler for _2 variants
+  const handleImageFallback = (e, originalSrc) => {
+    if (!e.target.dataset.retried) {
+      e.target.dataset.retried = "true";
+      e.target.src = originalSrc.replace(/(\.[^.]+)$/, "_2$1");
+    }
+  };
 
   return (
     <main className="relative min-h-screen bg-[#070709] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100 transform-gpu">
@@ -685,11 +693,12 @@ export default function Portfolio() {
                 onMouseLeave={handleHoverEnd}
                 className={`size-${item.size} photo-shimmer group relative bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden cursor-pointer hover:border-amber-500/60 hover:shadow-2xl hover:shadow-amber-500/15 transition-all duration-500`}
               >
-                {/* Image with Smooth Zoom & Contrast Lift */}
+                {/* Image with Smooth Zoom & Smart _2 Fallback */}
                 <img 
                   src={item.img} 
                   alt={item.title} 
                   loading="lazy"
+                  onError={(e) => handleImageFallback(e, item.img)}
                   className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 filter brightness-[0.88] contrast-[1.03] group-hover:brightness-105 group-hover:contrast-105"
                 />
                 
@@ -786,6 +795,7 @@ export default function Portfolio() {
               <img 
                 src={lightboxData.img} 
                 alt={lightboxData.title} 
+                onError={(e) => handleImageFallback(e, lightboxData.img)}
                 className="max-h-[78vh] w-auto object-contain bg-black"
               />
               
