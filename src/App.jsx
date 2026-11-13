@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { 
   Code2, 
   MonitorPlay, 
@@ -55,6 +55,13 @@ const expertise = [
     desc: "Capturing moments, astrophotography, and high-quality portraits with precision lighting.",
     icon: <Camera strokeWidth={1.5} className="w-8 h-8 text-amber-400" />
   }
+];
+
+const studyYears = [
+  { focus: "Programming foundations", topics: "C, digital systems, discrete mathematics, calculus, linear algebra" },
+  { focus: "Data and software design", topics: "Data structures, algorithms, object-oriented programming, databases, computer architecture" },
+  { focus: "Systems and networks", topics: "Operating systems, networking, software engineering, embedded systems" },
+  { focus: "Intelligence and visual computing", topics: "Artificial intelligence, compilers, graphics, security, digital image processing" }
 ];
 
 const projects = [
@@ -174,18 +181,21 @@ const categories = [
 ];
 
 // --- REUSABLE ANIMATION COMPONENTS ---
-const ScrollReveal = ({ children, delay = 0, className = "", width = "100%" }) => (
-  <div style={{ width }} className={className}>
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-5%" }}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
-    >
-      {children}
-    </motion.div>
-  </div>
-);
+const ScrollReveal = ({ children, delay = 0, className = "", width = "100%" }) => {
+  const reduceMotion = useReducedMotion();
+  return (
+    <div style={{ width }} className={className}>
+      <motion.div
+        initial={reduceMotion ? false : { opacity: 0, y: 30 }}
+        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-5%" }}
+        transition={{ duration: reduceMotion ? 0 : 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+};
 
 const staggerContainer = {
   hidden: { opacity: 0 },
@@ -204,8 +214,7 @@ const staggerItem = {
 };
 
 export default function Portfolio() {
-  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxData, setLightboxData] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -218,16 +227,8 @@ export default function Portfolio() {
   const rotateRing = useTransform(scrollYProgress, [0, 1], [0, 360]);
   const footerGlowScale = useTransform(scrollYProgress, [0.7, 1], [0.8, 1.4]);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setCursorPos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
-  const handleHoverStart = () => setIsHovering(true);
-  const handleHoverEnd = () => setIsHovering(false);
+  const handleHoverStart = () => {};
+  const handleHoverEnd = () => {};
 
   const filteredShowcase = activeFilter === 'All' 
     ? showcaseItems 
@@ -257,32 +258,32 @@ export default function Portfolio() {
 
         {/* Top Glow Orb */}
         <motion.div 
-          style={{ y: yOrbTop }}
-          className="absolute -top-32 left-1/2 -translate-x-1/2 md:left-1/4 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] bg-amber-500/[0.09] rounded-full blur-[120px] sm:blur-[160px] transform-gpu"
+          style={prefersReducedMotion ? undefined : { y: yOrbTop }}
+          className="ambient-glow ambient-glow-top absolute -top-32 left-1/2 -translate-x-1/2 md:left-1/4 w-[320px] sm:w-[600px] h-[320px] sm:h-[600px] bg-amber-500/[0.09] rounded-full blur-[120px] sm:blur-[160px] transform-gpu"
         />
 
         {/* Middle Glow Orb */}
         <motion.div 
-          style={{ y: yOrbMiddle }}
-          className="absolute top-[35%] -right-20 md:-right-32 w-[350px] sm:w-[650px] h-[350px] sm:h-[650px] bg-purple-900/[0.09] rounded-full blur-[130px] sm:blur-[190px] transform-gpu"
+          style={prefersReducedMotion ? undefined : { y: yOrbMiddle }}
+          className="ambient-glow ambient-glow-middle absolute top-[35%] -right-20 md:-right-32 w-[350px] sm:w-[650px] h-[350px] sm:h-[650px] bg-purple-900/[0.09] rounded-full blur-[130px] sm:blur-[190px] transform-gpu"
         />
 
         {/* Geometric Rotating Vector Ring */}
         <motion.div 
-          style={{ rotate: rotateRing }}
+          style={prefersReducedMotion ? undefined : { rotate: rotateRing }}
           className="absolute top-[20%] right-[6%] w-60 h-60 sm:w-80 sm:h-80 rounded-full border border-amber-500/10 border-dashed pointer-events-none transform-gpu hidden sm:block"
         />
 
         {/* Ambient Astro Stars */}
         <motion.div 
-          animate={{ y: [0, -20, 0], opacity: [0.2, 0.8, 0.2] }}
+          animate={prefersReducedMotion ? { opacity: 0.35 } : { y: [0, -20, 0], opacity: [0.2, 0.8, 0.2] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[25%] left-[8%] text-amber-400/40 text-sm"
         >
           ✦
         </motion.div>
         <motion.div 
-          animate={{ y: [0, 25, 0], opacity: [0.3, 0.9, 0.3] }}
+          animate={prefersReducedMotion ? { opacity: 0.4 } : { y: [0, 25, 0], opacity: [0.3, 0.9, 0.3] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[70%] right-[10%] text-amber-300/40 text-base"
         >
@@ -291,22 +292,10 @@ export default function Portfolio() {
 
         {/* Dynamic Footer Ambient Glow */}
         <motion.div 
-          style={{ scale: footerGlowScale }}
-          className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[500px] sm:w-[900px] h-[300px] sm:h-[450px] bg-amber-500/[0.14] rounded-full blur-[140px] sm:blur-[200px] transform-gpu"
+          style={prefersReducedMotion ? undefined : { scale: footerGlowScale }}
+          className="ambient-glow ambient-glow-footer absolute -bottom-40 left-1/2 -translate-x-1/2 w-[500px] sm:w-[900px] h-[300px] sm:h-[450px] bg-amber-500/[0.14] rounded-full blur-[140px] sm:blur-[200px] transform-gpu"
         />
       </div>
-
-      {/* Dynamic Cursor (Desktop Only) */}
-      <motion.div
-        className="fixed top-0 left-0 w-3.5 h-3.5 bg-amber-500 rounded-full pointer-events-none z-[100] mix-blend-difference hidden sm:block"
-        animate={{ 
-          x: cursorPos.x - 7, 
-          y: cursorPos.y - 7,
-          scale: isHovering ? 3.5 : 1,
-          opacity: isHovering ? 0.6 : 0.9
-        }}
-        transition={{ type: "spring", stiffness: 350, damping: 28, mass: 0.5 }}
-      />
 
       {/* 120FPS Smooth Scroll & Responsive Bento Grid CSS */}
       <style dangerouslySetInnerHTML={{__html: `
@@ -316,11 +305,7 @@ export default function Portfolio() {
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
         }
-        body { 
-          cursor: none; 
-          overscroll-behavior-y: none;
-        }
-        @media (pointer: coarse) { body { cursor: auto; } }
+        body { overscroll-behavior-y: none; }
         
         .bento-grid { 
           display: grid; 
@@ -364,11 +349,6 @@ export default function Portfolio() {
           left: 160%;
         }
         
-        /* 120 FPS Hardware Acceleration Helper */
-        * {
-          will-change: transform, opacity;
-          backface-visibility: hidden;
-        }
       `}} />
 
       {/* NAVIGATION HEADER (DESKTOP & MOBILE) */}
@@ -384,7 +364,7 @@ export default function Portfolio() {
 
         {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-10">
-          {['expertise', 'projects', 'showcase', 'contact'].map(link => (
+          {['expertise', 'study', 'projects', 'showcase', 'contact'].map(link => (
             <a 
               key={link}
               href={`#${link}`} 
@@ -416,7 +396,7 @@ export default function Portfolio() {
             exit={{ opacity: 0, y: -20 }}
             className="fixed inset-x-0 top-[65px] z-30 md:hidden bg-[#0a0a0d]/95 backdrop-blur-2xl border-b border-white/10 p-6 shadow-2xl flex flex-col gap-5 text-center"
           >
-            {['expertise', 'projects', 'showcase', 'contact'].map(link => (
+            {['expertise', 'study', 'projects', 'showcase', 'contact'].map(link => (
               <a 
                 key={link}
                 href={`#${link}`} 
@@ -435,6 +415,12 @@ export default function Portfolio() {
         id="hero"
         className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-28 pb-16 max-w-[1920px] mx-auto w-full relative z-10"
       >
+        <div className="hero-geometry" aria-hidden="true">
+          <motion.div style={prefersReducedMotion ? undefined : { y: yOrbTop, rotate: rotateRing }} className="geo-ring" />
+          <motion.div style={prefersReducedMotion ? undefined : { y: yOrbMiddle }} className="geo-orb" />
+          <motion.div style={prefersReducedMotion ? undefined : { y: yOrbTop, rotate: rotateRing }} className="geo-cube"><span /></motion.div>
+          <motion.div style={prefersReducedMotion ? undefined : { y: yOrbMiddle, rotate: rotateRing }} className="geo-diamond" />
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
           {/* Left Hero Content */}
@@ -543,8 +529,8 @@ export default function Portfolio() {
 
         <motion.div 
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
+          initial={prefersReducedMotion ? false : "hidden"}
+          whileInView={prefersReducedMotion ? undefined : "show"}
           viewport={{ once: true, margin: "-10%" }}
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6"
         >
@@ -564,6 +550,67 @@ export default function Portfolio() {
             </motion.div>
           ))}
         </motion.div>
+      </section>
+
+      {/* STUDY TIMELINE */}
+      <section
+        id="study"
+        className="study-section px-6 md:px-12 lg:px-24 py-24 max-w-[1920px] mx-auto w-full relative z-10 border-t border-white/5"
+      >
+        <ScrollReveal>
+          <div className="study-intro">
+            <div>
+              <span className="text-xs uppercase tracking-[0.3em] text-amber-500 font-bold block mb-3">Education · B.Sc. CSE</span>
+              <h3 className="font-serif text-4xl sm:text-6xl md:text-7xl text-white tracking-tight">How I learned<br className="hidden sm:block" /> to build.</h3>
+            </div>
+            <p>I studied computer science at Dhaka City College, moving from programming fundamentals into software design, systems, and visual computing.</p>
+          </div>
+        </ScrollReveal>
+
+        <div className="study-grid" role="list" aria-label="Computer science study track">
+          {studyYears.map((year, index) => (
+            <motion.div
+              key={year.focus}
+              role="listitem"
+              className="study-card"
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 32, scale: .98 }}
+              whileInView={prefersReducedMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-8%" }}
+              transition={{ duration: 0.7, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="study-card-top">
+                <span className="study-number">0{index + 1}</span>
+                <span>YEAR 0{index + 1}</span>
+              </div>
+              <div className="study-progress">
+                <motion.span
+                  initial={prefersReducedMotion ? false : { scaleX: 0 }}
+                  whileInView={prefersReducedMotion ? undefined : { scaleX: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: .8, delay: .18 + index * .08, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ width: `${(index + 1) * 25}%`, transformOrigin: "left" }}
+                />
+              </div>
+              <h4>{year.focus}</h4>
+              <p>{year.topics}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="study-footnote">
+          <div>
+            <span className="study-footnote-label">DEGREE</span>
+            <strong>B.Sc. (Honours), Computer Science and Engineering</strong>
+          </div>
+          <div>
+            <span className="study-footnote-label">COLLEGE</span>
+            <span>Dhaka City College · National University Professional Programme</span>
+          </div>
+          <div>
+            <span className="study-footnote-label">STATUS</span>
+            <span>Final examinations completed October 2026; results pending.</span>
+          </div>
+        </div>
       </section>
 
       {/* PROJECTS SECTION */}
@@ -740,11 +787,12 @@ export default function Portfolio() {
         className="px-6 md:px-12 lg:px-24 py-24 mt-16 border-t border-white/5 relative z-10 text-center"
       >
         <ScrollReveal className="max-w-4xl mx-auto flex flex-col items-center">
-          <span className="text-xs uppercase tracking-[0.3em] text-amber-500 font-bold block mb-3">Get In Touch</span>
+          <span className="text-xs uppercase tracking-[0.3em] text-amber-500 font-bold block mb-3">Open to opportunities</span>
           <h2 className="font-serif text-4xl sm:text-7xl md:text-8xl text-white mb-6 tracking-tighter leading-none">
-            Let's build <br />
-            <span className="text-neutral-500 italic">the future.</span>
+            Ready to <br />
+            <span className="text-neutral-500 italic">contribute.</span>
           </h2>
+          <p className="contact-intro">I bring a computer science foundation and hands-on work with React, Python, and interface design. I’m looking for a junior frontend or software role where I can contribute to a real product and keep growing with the team.</p>
           
           <button 
             onMouseEnter={handleHoverStart} 
