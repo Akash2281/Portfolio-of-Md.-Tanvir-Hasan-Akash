@@ -9,7 +9,7 @@
   text-rendering: optimizeLegibility;
 }
 
-html { scroll-behavior: smooth; background: #111; }
+html { scroll-behavior: smooth; background: #111; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body { margin: 0; cursor: auto !important; background: #111; overflow-x: clip; }
 *, *::before, *::after { backface-visibility: visible; }
 *, *::before, *::after { box-sizing: border-box; }
@@ -214,6 +214,21 @@ footer#contact h2 { font-size: clamp(4rem, 10vw, 9rem) !important; }
   .study-card { min-height: 235px; padding: 18px; border-radius: 14px; }
   .study-progress { margin: 17px 0; }
   .study-footnote { grid-template-columns: 1fr; gap: 14px; padding: 18px; }
+  /* Keep body copy and supporting labels comfortably readable on phones. */
+  section#hero p { font-size: 16px !important; line-height: 1.7 !important; }
+  section#expertise p, section#projects p, section#showcase p,
+  .study-intro > p, .study-card p, .study-footnote > div > span:not(.study-footnote-label) {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+  }
+  section#expertise h4 { font-size: 18px !important; }
+  section#projects h5 { font-size: 12px !important; }
+  section#projects button, section#showcase button { font-size: 12px !important; }
+  section#showcase .bento-grid span { font-size: 11px !important; }
+  section#showcase .bento-grid h4 { font-size: 17px !important; }
+  .study-card-top > span:last-child, .study-footnote-label { font-size: 10px !important; }
+  .study-footnote strong { font-size: 14px !important; }
+  footer#contact > div:last-child { font-size: 12px !important; }
 }
 @media (max-width: 420px) {
   header.fixed { left: 8px; right: 8px; padding: 9px 12px !important; }
