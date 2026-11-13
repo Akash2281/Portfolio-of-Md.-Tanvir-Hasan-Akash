@@ -12,8 +12,6 @@ import {
   Mail,
   X,
   Image as ImageIcon,
-  Sparkles,
-  Compass,
   Menu,
   Maximize2
 } from 'lucide-react';
@@ -424,23 +422,25 @@ export default function Portfolio() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
           
           {/* Left Hero Content */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          <div className="lg:col-span-7 space-y-6 text-left hero-copy">
             <ScrollReveal>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[11px] sm:text-xs font-semibold uppercase tracking-widest mb-2">
-                <Sparkles className="w-3.5 h-3.5" /> Creative Technologist & Visual Designer
+              <div className="hero-intro-label">
+                <span>COMPUTER SCIENCE · SOFTWARE · VISUAL DESIGN</span>
+                <span className="hero-label-rule" />
               </div>
             </ScrollReveal>
 
             <ScrollReveal delay={0.1}>
-              <h1 className="font-serif text-4xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tighter leading-[0.95] uppercase">
+              <div className="hero-greeting">Hi, I’m</div>
+              <h1 className="font-serif text-4xl sm:text-7xl md:text-8xl lg:text-7xl xl:text-8xl font-extrabold text-white tracking-tighter leading-[0.95]">
                 Tanvir Hasan <br />
                 <span className="text-neutral-500">Akash<span className="text-amber-500">.</span></span>
               </h1>
             </ScrollReveal>
 
             <ScrollReveal delay={0.2}>
-              <p className="text-sm sm:text-xl text-neutral-400 font-light leading-relaxed max-w-2xl pt-2">
-                Merging logic with imagination. I engineer scalable software, design pixel-perfect interfaces, and produce cinematic visual media—delivering complete digital experiences.
+              <p className="text-sm sm:text-xl text-neutral-400 font-light leading-relaxed max-w-2xl pt-2 hero-summary">
+                I study computer science and build projects with React, Python, and visual design tools. I enjoy taking an idea from an early sketch to a working application.
               </p>
             </ScrollReveal>
 
@@ -466,45 +466,24 @@ export default function Portfolio() {
             </ScrollReveal>
           </div>
 
-          {/* Right Hero: Responsive Glassmorphic Headshot Frame */}
-          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+          {/* Portrait integrated into the introduction */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end hero-photo-column">
             <ScrollReveal delay={0.2} className="w-full max-w-[320px] sm:max-w-[430px]">
-              <motion.div 
-                whileHover={{ y: -6, scale: 1.01 }}
+              <motion.div
+                whileHover={{ y: -5 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="relative rounded-3xl p-3 sm:p-4 bg-gradient-to-b from-amber-500/25 via-white/[0.04] to-black/90 border border-amber-500/35 backdrop-blur-2xl shadow-2xl shadow-amber-500/10 group"
+                className="hero-photo group"
               >
-                {/* Glowing Corner Glow */}
-                <div className="absolute -top-6 -left-6 w-24 sm:w-28 h-24 sm:h-28 bg-amber-500/15 blur-2xl rounded-full pointer-events-none" />
-
-                <div className="relative w-full aspect-[4/5] sm:h-[520px] rounded-2xl overflow-hidden bg-neutral-900 border border-white/10">
-                  <img 
-                    src="/profile.jpg" 
-                    alt="Md. Tanvir Hasan Akash" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter brightness-[0.98] contrast-[1.02]"
-                    onError={(e) => {
-                      e.target.onerror = null; 
-                      e.target.src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80";
-                    }}
+                <div className="hero-photo-frame">
+                  <img
+                    src="/profile.jpg"
+                    alt="Portrait of Md. Tanvir Hasan Akash"
+                    className="w-full h-full object-cover group-hover:scale-[1.025] transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
-
-                  {/* Status Badge */}
-                  <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex items-center gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-amber-500/30 text-[9px] sm:text-[10px] uppercase tracking-wider text-amber-400 font-bold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    Available For Projects
-                  </div>
-
-                  {/* Profile Info Overlay */}
-                  <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-5 sm:right-5 space-y-3">
-                    <div className="bg-black/85 backdrop-blur-md p-3 sm:p-4 rounded-xl border border-white/10 flex justify-between items-center">
-                      <div>
-                        <h4 className="text-white text-xs sm:text-sm font-bold tracking-tight">Md. Tanvir Hasan Akash</h4>
-                        <p className="text-neutral-400 text-[10px] sm:text-[11px]">B.Sc CSE • Dhaka, Bangladesh</p>
-                      </div>
-                      <Compass className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400 animate-spin" style={{ animationDuration: '14s' }} />
-                    </div>
-                  </div>
+                </div>
+                <div className="hero-photo-caption">
+                  <span>MD. TANVIR HASAN AKASH</span>
+                  <span>COMPUTER SCIENCE · DHAKA</span>
                 </div>
               </motion.div>
             </ScrollReveal>

@@ -112,6 +112,21 @@ section#hero > div:not(.hero-geometry) > div:nth-child(2) { position: relative; 
 section#hero > div:not(.hero-geometry) > div:nth-child(2) > div { max-width: 430px !important; }
 section#hero > div:not(.hero-geometry) > div:nth-child(2) > div > div { filter: none; }
 
+/* A personal, portrait-led introduction with its own editorial details. */
+.hero-copy { position: relative; z-index: 2; }
+.hero-intro-label { display: flex; align-items: center; gap: 16px; color: rgba(245,158,11,.8); font: 500 10px/1.4 'DM Sans', sans-serif; letter-spacing: .18em; }
+.hero-label-rule { width: 42px; height: 1px; background: rgba(245,158,11,.56); }
+.hero-greeting { margin-bottom: 12px; color: rgba(244,242,238,.52); font: 400 clamp(17px,1.6vw,22px)/1.2 'DM Sans',sans-serif; letter-spacing: -.025em; }
+.hero-summary { max-width: 540px !important; }
+.hero-photo-column { position: relative; z-index: 2; }
+.hero-photo { position: relative; width: 100%; max-width: 430px; }
+.hero-photo-frame { position: relative; height: clamp(390px, 42vw, 560px); overflow: hidden; border: 1px solid rgba(244,242,238,.17); border-radius: 48% 48% 9px 9px; background: #242321; box-shadow: 0 28px 90px rgba(0,0,0,.38); }
+.hero-photo-frame::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 62%, rgba(15,15,14,.22)); }
+.hero-photo-frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center 35%; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+.hero-photo:hover .hero-photo-frame img { transform: scale(1.025); }
+.hero-photo-caption { display: flex; justify-content: space-between; gap: 12px; padding: 14px 2px 0; color: rgba(244,242,238,.48); font-size: 9px; letter-spacing: .13em; }
+.hero-photo-caption span:first-child { color: rgba(244,242,238,.76); }
+
 /* Calm, high contrast sections, with the photography as the feature */
 section#expertise, section#study, section#projects, section#showcase, footer#contact {
   padding-left: clamp(24px, 8vw, 120px) !important;
@@ -195,6 +210,14 @@ footer#contact h2 { font-size: clamp(4rem, 10vw, 9rem) !important; }
 @media (max-width: 640px) {
   header.fixed { top: 8px; left: 12px; right: 12px; padding: 10px 14px !important; }
   section#hero { min-height: 820px; padding: 112px 20px 64px !important; }
+  section#hero > div:not(.hero-geometry) { width: 100%; }
+  .hero-copy { gap: 18px !important; }
+  .hero-intro-label { font-size: 9px; letter-spacing: .12em; }
+  .hero-greeting { margin-bottom: 8px; font-size: 17px; }
+  .hero-photo-column { margin-top: 2px; }
+  .hero-photo { max-width: 310px; }
+  .hero-photo-frame { height: clamp(310px, 92vw, 390px); }
+  .hero-photo-caption { font-size: 8px; letter-spacing: .09em; }
   section#hero > .hero-geometry { inset: 100px -22vw 280px 18vw; width: auto; opacity: .75; }
   .geo-ring { width: 250px; top: 0; right: 0; }
   .geo-orb { width: 150px; top: 34%; right: 20%; }
@@ -234,6 +257,9 @@ footer#contact h2 { font-size: clamp(4rem, 10vw, 9rem) !important; }
 @media (max-width: 420px) {
   header.fixed { left: 8px; right: 8px; padding: 9px 12px !important; }
   section#hero { min-height: 790px; padding-left: 16px !important; padding-right: 16px !important; }
+  .hero-photo { max-width: 270px; }
+  .hero-photo-frame { height: 320px; }
+  .hero-photo-caption { flex-direction: column; gap: 5px; }
   section#hero h1 { font-size: clamp(2.5rem, 12.5vw, 3.25rem) !important; letter-spacing: -.075em !important; }
   .study-grid { grid-template-columns: 1fr; }
   .study-card { min-height: 210px; }
