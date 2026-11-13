@@ -218,16 +218,17 @@ footer#contact h2 { font-size: clamp(4rem, 10vw, 9rem) !important; }
   section#hero p { font-size: 16px !important; line-height: 1.7 !important; }
   section#expertise p, section#projects p, section#showcase p,
   .study-intro > p, .study-card p, .study-footnote > div > span:not(.study-footnote-label) {
-    font-size: 14px !important;
+    font-size: 16px !important;
     line-height: 1.7 !important;
   }
-  section#expertise h4 { font-size: 18px !important; }
+  section#expertise h4 { font-size: 19px !important; }
   section#projects h5 { font-size: 12px !important; }
   section#projects button, section#showcase button { font-size: 12px !important; }
-  section#showcase .bento-grid span { font-size: 11px !important; }
+  section#showcase .bento-grid span { font-size: 12px !important; }
   section#showcase .bento-grid h4 { font-size: 17px !important; }
-  .study-card-top > span:last-child, .study-footnote-label { font-size: 10px !important; }
-  .study-footnote strong { font-size: 14px !important; }
+  .study-card-top > span:last-child, .study-footnote-label { font-size: 11px !important; }
+  .study-footnote strong { font-size: 15px !important; }
+  .contact-intro { font-size: 16px !important; }
   footer#contact > div:last-child { font-size: 12px !important; }
 }
 @media (max-width: 420px) {
