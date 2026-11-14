@@ -234,7 +234,7 @@ export default function Portfolio() {
   const palettePreviewEnabled = previewParams.get('palette-preview') === '1';
   const initialPalette = portfolioPalettes.some(({ id }) => id === previewParams.get('palette'))
     ? previewParams.get('palette')
-    : 'saffron';
+    : 'cobalt';
   const initialTypeface = previewParams.get('weight') === 'bold' || previewParams.get('typeface') === 'bold' ? 'bold' : 'refined';
   const initialFont = fontFamilies.some(({ id }) => id === previewParams.get('font')) ? previewParams.get('font') : 'manrope';
   const [activePalette, setActivePalette] = useState(initialPalette);
