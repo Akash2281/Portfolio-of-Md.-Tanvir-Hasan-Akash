@@ -178,6 +178,13 @@ const categories = [
   'Minimal & Macro'
 ];
 
+const portfolioPalettes = [
+  { id: 'saffron', name: 'Current amber', color: '#f59e0b', description: 'Your existing warm amber, kept as the baseline.' },
+  { id: 'cobalt', name: 'Deep cobalt', color: '#78b7ff', description: 'Cool blue with a precise, technical feel.' },
+  { id: 'teal', name: 'Quiet teal', color: '#75c8b4', description: 'Muted green blue, calm and contemporary.' },
+  { id: 'oxide', name: 'Warm oxide', color: '#df8d70', description: 'Soft mineral red with an editorial edge.' }
+];
+
 // --- REUSABLE ANIMATION COMPONENTS ---
 const ScrollReveal = ({ children, delay = 0, className = "", width = "100%" }) => {
   const reduceMotion = useReducedMotion();
@@ -213,6 +220,12 @@ const staggerItem = {
 
 export default function Portfolio() {
   const prefersReducedMotion = useReducedMotion();
+  const previewParams = new URLSearchParams(window.location.search);
+  const palettePreviewEnabled = previewParams.get('palette-preview') === '1';
+  const initialPalette = portfolioPalettes.some(({ id }) => id === previewParams.get('palette'))
+    ? previewParams.get('palette')
+    : 'saffron';
+  const [activePalette, setActivePalette] = useState(initialPalette);
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxData, setLightboxData] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -228,6 +241,14 @@ export default function Portfolio() {
   const handleHoverStart = () => {};
   const handleHoverEnd = () => {};
 
+  const selectPalette = (paletteId) => {
+    setActivePalette(paletteId);
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set('palette-preview', '1');
+    nextUrl.searchParams.set('palette', paletteId);
+    window.history.replaceState({}, '', nextUrl);
+  };
+
   const filteredShowcase = activeFilter === 'All' 
     ? showcaseItems 
     : showcaseItems.filter(item => item.type === activeFilter);
@@ -241,7 +262,33 @@ export default function Portfolio() {
   };
 
   return (
-    <main className="relative min-h-screen bg-[#070709] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100 transform-gpu">
+    <main data-palette={activePalette} className="relative min-h-screen bg-[#070709] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100 transform-gpu">
+
+      {palettePreviewEnabled && (
+        <aside className="palette-preview" aria-label="Portfolio color palette preview">
+          <div className="palette-preview-heading">
+            <span>PALETTE STUDY</span>
+            <span>Preview · {portfolioPalettes.find(({ id }) => id === activePalette)?.name}</span>
+          </div>
+          <div className="palette-preview-options" role="group" aria-label="Choose a color palette">
+            {portfolioPalettes.map((palette) => (
+              <button
+                key={palette.id}
+                type="button"
+                className={`palette-choice${activePalette === palette.id ? ' is-active' : ''}`}
+                onClick={() => selectPalette(palette.id)}
+                aria-pressed={activePalette === palette.id}
+                aria-label={`${palette.name}: ${palette.description}`}
+                title={`${palette.name} — ${palette.description}`}
+              >
+                <span className="palette-swatch" style={{ '--swatch': palette.color }} />
+                <span>{palette.name}</span>
+              </button>
+            ))}
+          </div>
+          <p>{portfolioPalettes.find(({ id }) => id === activePalette)?.description}</p>
+        </aside>
+      )}
       
       {/* ----------------- 120 FPS BUTTER SMOOTH ANIMATED BACKGROUND ----------------- */}
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden transform-gpu">
@@ -249,7 +296,7 @@ export default function Portfolio() {
         <div 
           className="absolute inset-0 opacity-[0.03]"
           style={{ 
-            backgroundImage: `radial-gradient(circle at 1px 1px, #f59e0b 1px, transparent 0)`, 
+            backgroundImage: `radial-gradient(circle at 1px 1px, var(--accent) 1px, transparent 0)`,
             backgroundSize: '48px 48px' 
           }} 
         />
