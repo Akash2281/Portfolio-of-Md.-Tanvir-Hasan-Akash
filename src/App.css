@@ -361,10 +361,10 @@ main[data-typeface="bold"] footer#contact h2 { font-weight: 700 !important; lett
 .palette-type-choice { padding: 6px 11px; border: 1px solid rgba(255,255,255,.09); border-radius: 7px; background: rgba(255,255,255,.025); color: rgba(244,242,238,.65); font: 500 10px/1 'DM Sans',sans-serif; cursor: pointer; }
 .palette-type-choice.is-active { border-color: rgba(244,242,238,.38); background: rgba(255,255,255,.09); color: #fff; }
 .palette-preview > p { margin: 9px 0 0; color: rgba(244,242,238,.54); font-size: 11px; line-height: 1.5; }
-main[data-palette-preview="true"] section#hero { padding-top: 320px !important; }
+main[data-palette-preview="true"] section#hero { padding-top: 400px !important; }
 @media (max-width: 480px) {
   .palette-preview { top: 78px; right: 10px; width: calc(100vw - 20px); padding: 12px; }
-  main[data-palette-preview="true"] section#hero { padding-top: 330px !important; }
+  main[data-palette-preview="true"] section#hero { padding-top: 400px !important; }
   .palette-preview-options { gap: 4px; }
   .palette-choice { gap: 5px; padding: 7px 1px; font-size: 8px; }
 }
