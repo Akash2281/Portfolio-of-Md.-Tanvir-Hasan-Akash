@@ -179,13 +179,20 @@ const categories = [
 ];
 
 const portfolioPalettes = [
-  { id: 'saffron', name: 'Current amber', shortName: 'Amber', color: '#f59e0b', description: 'Your existing warm amber, kept as the baseline.' },
-  { id: 'cobalt', name: 'Deep cobalt', shortName: 'Cobalt', color: '#78b7ff', description: 'Cool blue with a precise, technical feel.' },
-  { id: 'teal', name: 'Quiet teal', shortName: 'Teal', color: '#75c8b4', description: 'Muted green blue, calm and contemporary.' },
-  { id: 'oxide', name: 'Warm oxide', shortName: 'Oxide', color: '#df8d70', description: 'Soft mineral red with an editorial edge.' },
-  { id: 'citron', name: 'Graphite citron', shortName: 'Citron', color: '#b9ca68', description: 'A restrained citrus green against deep graphite.' },
-  { id: 'iris', name: 'Night iris', shortName: 'Iris', color: '#ad9bea', description: 'A quiet violet with a darker, more cinematic base.' },
-  { id: 'glacier', name: 'Glacier blue', shortName: 'Glacier', color: '#70cbd5', description: 'A cool cyan with a clean, forward looking feel.' }
+  { id: 'saffron', name: 'Current amber', shortName: 'Amber', color: '#f59e0b', description: 'Your original charcoal, ivory, and amber combination.' },
+  { id: 'cobalt', name: 'Deep cobalt', shortName: 'Cobalt', color: '#78b7ff', description: 'Midnight navy, cool white, and precise cobalt blue.' },
+  { id: 'teal', name: 'Quiet teal', shortName: 'Teal', color: '#75c8b4', description: 'Deep green charcoal, soft mint, and muted teal.' },
+  { id: 'oxide', name: 'Warm oxide', shortName: 'Oxide', color: '#df8d70', description: 'Warm charcoal, parchment white, and mineral red.' },
+  { id: 'citron', name: 'Graphite citron', shortName: 'Citron', color: '#b9ca68', description: 'Olive graphite, pale stone, and restrained citron.' },
+  { id: 'iris', name: 'Night iris', shortName: 'Iris', color: '#ad9bea', description: 'Deep plum charcoal, cool white, and soft iris violet.' },
+  { id: 'glacier', name: 'Glacier blue', shortName: 'Glacier', color: '#70cbd5', description: 'Blue black, crisp ice, and quiet glacier cyan.' }
+];
+
+const fontFamilies = [
+  { id: 'manrope', name: 'Manrope', description: 'Current · clean and balanced' },
+  { id: 'space', name: 'Space Grotesk', shortName: 'Space', description: 'Technical · geometric' },
+  { id: 'sora', name: 'Sora', description: 'Modern · precise' },
+  { id: 'outfit', name: 'Outfit', description: 'Elegant · open' }
 ];
 
 // --- REUSABLE ANIMATION COMPONENTS ---
@@ -228,9 +235,11 @@ export default function Portfolio() {
   const initialPalette = portfolioPalettes.some(({ id }) => id === previewParams.get('palette'))
     ? previewParams.get('palette')
     : 'saffron';
-  const initialTypeface = previewParams.get('typeface') === 'bold' ? 'bold' : 'refined';
+  const initialTypeface = previewParams.get('weight') === 'bold' || previewParams.get('typeface') === 'bold' ? 'bold' : 'refined';
+  const initialFont = fontFamilies.some(({ id }) => id === previewParams.get('font')) ? previewParams.get('font') : 'manrope';
   const [activePalette, setActivePalette] = useState(initialPalette);
   const [activeTypeface, setActiveTypeface] = useState(initialTypeface);
+  const [activeFont, setActiveFont] = useState(initialFont);
   const [activeFilter, setActiveFilter] = useState('All');
   const [lightboxData, setLightboxData] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -258,7 +267,16 @@ export default function Portfolio() {
     setActiveTypeface(typeface);
     const nextUrl = new URL(window.location.href);
     nextUrl.searchParams.set('palette-preview', '1');
-    nextUrl.searchParams.set('typeface', typeface);
+    nextUrl.searchParams.set('weight', typeface);
+    nextUrl.searchParams.delete('typeface');
+    window.history.replaceState({}, '', nextUrl);
+  };
+
+  const selectFont = (fontId) => {
+    setActiveFont(fontId);
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.set('palette-preview', '1');
+    nextUrl.searchParams.set('font', fontId);
     window.history.replaceState({}, '', nextUrl);
   };
 
@@ -275,12 +293,12 @@ export default function Portfolio() {
   };
 
   return (
-    <main data-palette={activePalette} data-typeface={activeTypeface} data-palette-preview={palettePreviewEnabled ? 'true' : undefined} className="relative min-h-screen bg-[#070709] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100 transform-gpu">
+    <main data-palette={activePalette} data-typeface={activeTypeface} data-font-family={activeFont} data-palette-preview={palettePreviewEnabled ? 'true' : undefined} className="relative min-h-screen bg-[#070709] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100 transform-gpu">
 
       {palettePreviewEnabled && (
         <aside className="palette-preview" aria-label="Portfolio color palette preview">
           <div className="palette-preview-heading">
-            <span>PALETTE STUDY</span>
+            <span>FULL COLOR STUDY</span>
             <span>Preview · {portfolioPalettes.find(({ id }) => id === activePalette)?.name}</span>
           </div>
           <div className="palette-preview-options" role="group" aria-label="Choose a color palette">
@@ -299,6 +317,16 @@ export default function Portfolio() {
               </button>
             ))}
           </div>
+          <div className="palette-type-row font-family-row">
+            <span>DISPLAY FONT</span>
+            <div role="group" aria-label="Choose display font">
+              {fontFamilies.map((font) => (
+                <button key={font.id} type="button" className={`palette-type-choice font-choice${activeFont === font.id ? ' is-active' : ''}`} onClick={() => selectFont(font.id)} aria-pressed={activeFont === font.id} title={font.description}>
+                  {font.shortName || font.name}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="palette-type-row">
             <span>HEADINGS</span>
             <div role="group" aria-label="Choose heading weight">
@@ -306,7 +334,7 @@ export default function Portfolio() {
               <button type="button" className={`palette-type-choice${activeTypeface === 'bold' ? ' is-active' : ''}`} onClick={() => selectTypeface('bold')} aria-pressed={activeTypeface === 'bold'}>Bold</button>
             </div>
           </div>
-          <p>{portfolioPalettes.find(({ id }) => id === activePalette)?.description} {activeTypeface === 'bold' ? 'Headings use a stronger weight.' : 'Headings use the current lighter weight.'}</p>
+          <p>{portfolioPalettes.find(({ id }) => id === activePalette)?.description} · {fontFamilies.find(({ id }) => id === activeFont)?.name} · {activeTypeface === 'bold' ? 'Bold' : 'Refined'}</p>
         </aside>
       )}
       
