@@ -236,7 +236,7 @@ export default function Portfolio() {
     ? previewParams.get('palette')
     : 'cobalt';
   const initialTypeface = previewParams.get('weight') === 'refined' || previewParams.get('typeface') === 'refined' ? 'refined' : 'bold';
-  const initialFont = fontFamilies.some(({ id }) => id === previewParams.get('font')) ? previewParams.get('font') : 'space';
+  const initialFont = fontFamilies.some(({ id }) => id === previewParams.get('font')) ? previewParams.get('font') : 'outfit';
   const [activePalette, setActivePalette] = useState(initialPalette);
   const [activeTypeface, setActiveTypeface] = useState(initialTypeface);
   const [activeFont, setActiveFont] = useState(initialFont);
