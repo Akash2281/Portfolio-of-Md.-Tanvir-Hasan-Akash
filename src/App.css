@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
   color-scheme: dark;
@@ -324,6 +324,9 @@ main[data-font-family="sora"] { --heading-font: 'Sora', sans-serif; }
 main[data-font-family="outfit"] { --heading-font: 'Outfit', sans-serif; }
 main[data-font-family] h1, main[data-font-family] h2, main[data-font-family] h3,
 main[data-font-family] h4, main[data-font-family] h5, main[data-font-family] header.fixed > a { font-family: var(--heading-font) !important; }
+main[data-font-family] [class*="tracking-[0.3em]"],
+main[data-font-family] .hero-intro-label,
+main[data-font-family] .study-card-top > span:last-child { font-family: 'IBM Plex Mono', monospace !important; }
 main[data-typeface="bold"] section#hero h1,
 main[data-typeface="bold"] section#expertise h3,
 main[data-typeface="bold"] section#study h3,
