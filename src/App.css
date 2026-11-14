@@ -271,21 +271,21 @@ main[data-palette="cobalt"] { --page: #0c111a; --accent: #78b7ff; --accent-wash:
 main[data-palette="teal"] { --page: #0d1413; --accent: #75c8b4; --accent-wash: rgba(117,200,180,.11); }
 main[data-palette="oxide"] { --page: #151211; --accent: #df8d70; --accent-wash: rgba(223,141,112,.11); }
 main[data-palette] { --accent-soft: color-mix(in srgb, var(--accent) 68%, white); background-color: var(--page) !important; transition: background-color .35s ease; }
-main[data-palette] [class*="text-amber-"] { color: var(--accent) !important; }
-main[data-palette] [class~="bg-amber-500"] { background-color: var(--accent) !important; }
-main[data-palette] [class*="bg-amber-500/"] { background-color: var(--accent-wash) !important; }
-main[data-palette] [class*="border-amber-"] { border-color: color-mix(in srgb, var(--accent) 32%, transparent) !important; }
-main[data-palette] [class*="hover:border-amber-"]:hover { border-color: color-mix(in srgb, var(--accent) 60%, transparent) !important; }
-main[data-palette] [class*="hover:text-amber-"]:hover { color: var(--accent-soft) !important; }
-main[data-palette] [class*="hover:bg-amber-"]:hover { background-color: var(--accent-soft) !important; }
-main[data-palette] [class*="shadow-amber-"] { --tw-shadow-color: color-mix(in srgb, var(--accent) 18%, transparent) !important; }
-main[data-palette] .hero-intro-label, main[data-palette] .study-number, main[data-palette] .study-footnote-label { color: var(--accent) !important; }
-main[data-palette] .hero-label-rule { background-color: color-mix(in srgb, var(--accent) 58%, transparent); }
-main[data-palette] .geo-diamond { border-color: color-mix(in srgb, var(--accent) 42%, transparent); background: linear-gradient(145deg, var(--accent-wash), rgba(255,255,255,.015) 60%); }
-main[data-palette] .geo-ring::after { border-color: color-mix(in srgb, var(--accent) 24%, transparent); }
-main[data-palette] .geo-cube { background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.015) 55%, var(--accent-wash)); }
-main[data-palette] .study-progress span { background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 20%, transparent)); }
-main[data-palette] .hero-photo-frame { border-color: color-mix(in srgb, var(--accent) 25%, rgba(244,242,238,.17)); }
+main[data-palette]:not([data-palette="saffron"]) [class*="text-amber-"] { color: var(--accent) !important; }
+main[data-palette]:not([data-palette="saffron"]) [class~="bg-amber-500"] { background-color: var(--accent) !important; }
+main[data-palette]:not([data-palette="saffron"]) [class*="bg-amber-500/"] { background-color: var(--accent-wash) !important; }
+main[data-palette]:not([data-palette="saffron"]) [class*="border-amber-"] { border-color: color-mix(in srgb, var(--accent) 32%, transparent) !important; }
+main[data-palette]:not([data-palette="saffron"]) [class*="hover:border-amber-"]:hover { border-color: color-mix(in srgb, var(--accent) 60%, transparent) !important; }
+main[data-palette]:not([data-palette="saffron"]) [class*="hover:text-amber-"]:hover { color: var(--accent-soft) !important; }
+main[data-palette]:not([data-palette="saffron"]) [class*="hover:bg-amber-"]:hover { background-color: var(--accent-soft) !important; }
+main[data-palette]:not([data-palette="saffron"]) [class*="shadow-amber-"] { --tw-shadow-color: color-mix(in srgb, var(--accent) 18%, transparent) !important; }
+main[data-palette]:not([data-palette="saffron"]) .hero-intro-label, main[data-palette]:not([data-palette="saffron"]) .study-number, main[data-palette]:not([data-palette="saffron"]) .study-footnote-label { color: var(--accent) !important; }
+main[data-palette]:not([data-palette="saffron"]) .hero-label-rule { background-color: color-mix(in srgb, var(--accent) 58%, transparent); }
+main[data-palette]:not([data-palette="saffron"]) .geo-diamond { border-color: color-mix(in srgb, var(--accent) 42%, transparent); background: linear-gradient(145deg, var(--accent-wash), rgba(255,255,255,.015) 60%); }
+main[data-palette]:not([data-palette="saffron"]) .geo-ring::after { border-color: color-mix(in srgb, var(--accent) 24%, transparent); }
+main[data-palette]:not([data-palette="saffron"]) .geo-cube { background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.015) 55%, var(--accent-wash)); }
+main[data-palette]:not([data-palette="saffron"]) .study-progress span { background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 20%, transparent)); }
+main[data-palette]:not([data-palette="saffron"]) .hero-photo-frame { border-color: color-mix(in srgb, var(--accent) 25%, rgba(244,242,238,.17)); }
 
 .palette-preview {
   position: fixed;
@@ -311,7 +311,7 @@ main[data-palette] .hero-photo-frame { border-color: color-mix(in srgb, var(--ac
 .palette-preview > p { margin: 10px 0 0; color: rgba(244,242,238,.54); font-size: 11px; line-height: 1.5; }
 @media (max-width: 480px) {
   .palette-preview { top: 78px; right: 10px; width: calc(100vw - 20px); padding: 12px; }
-  main[data-palette] section#hero { padding-top: 230px !important; }
+  main[data-palette-preview="true"] section#hero { padding-top: 230px !important; }
   .palette-preview-options { gap: 5px; }
   .palette-choice { flex-direction: column; gap: 5px; padding: 8px 4px; font-size: 9px; }
 }

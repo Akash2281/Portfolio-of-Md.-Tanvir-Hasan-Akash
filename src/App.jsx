@@ -262,7 +262,7 @@ export default function Portfolio() {
   };
 
   return (
-    <main data-palette={activePalette} className="relative min-h-screen bg-[#070709] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100 transform-gpu">
+    <main data-palette={activePalette} data-palette-preview={palettePreviewEnabled ? 'true' : undefined} className="relative min-h-screen bg-[#070709] text-gray-300 font-sans overflow-x-hidden selection:bg-amber-500/30 selection:text-amber-100 transform-gpu">
 
       {palettePreviewEnabled && (
         <aside className="palette-preview" aria-label="Portfolio color palette preview">
